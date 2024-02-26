@@ -1,4 +1,4 @@
-package com.yamisora.superwebne.Config;
+package com.yamisora.superwebne.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
