@@ -10,8 +10,14 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import java.util.Date;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import com.yamisora.superwebne.model.Role;
 
 @Entity
@@ -37,13 +43,19 @@ public class User {
     @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_USER_ROLE"))
     private Role role;
 
-    private Timestamp created_at;
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime created_at;
+
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    private LocalDateTime updated_at;
+
+    public User (){}
     
     public User(String username, String email, String password, Role role) {
         super();
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.password = passwordEncoder().encode(password);
         this.role = role;
     }
 
@@ -81,5 +93,13 @@ public class User {
 
     public int getId() {
         return id;
+    }
+
+    public static Object withDefaultPasswordEncoder() {
+        return null;
+    }
+
+    private PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }
