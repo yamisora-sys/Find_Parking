@@ -6,5 +6,8 @@
 </head>
 <body>
     <p th:text="|Hello, ${name}!|" />
+    <!-- get current user -->
+    <p th:text="|Hello, ${username}!|" />
+    <p th:text="|Your role is ${role}!|" />
 </body>
 </html>

@@ -4,10 +4,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.yamisora.superwebne.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.util.Collection;
+import java.util.stream.Collectors;
 import java.util.Collections;
 
 public class UserDetailsConfig implements UserDetails{
+    // UserDetails using database
     private User user;
 
     public UserDetailsConfig(User user){
@@ -16,7 +19,9 @@ public class UserDetailsConfig implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        String role = user.hasRole().getName();
+        GrantedAuthority authority = new SimpleGrantedAuthority(role);
+        return Collections.singletonList(authority);
     }
 
     @Override
@@ -27,6 +32,10 @@ public class UserDetailsConfig implements UserDetails{
     @Override
     public String getUsername() {
         return user.getUsername();
+    }
+
+    public String getRole(){
+        return user.getRole();
     }
 
     @Override

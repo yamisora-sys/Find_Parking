@@ -3,29 +3,23 @@ package com.yamisora.superwebne.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
-
-import jakarta.activation.DataSource;
 
 @Configuration
 @EnableWebMvc
+// enable jpa repository for the project
 @EnableJpaRepositories(basePackages = "com.yamisora.superwebne.repository")
 public class WebConfig implements WebMvcConfigurer{
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-          .addResourceHandler("/resources/**")
-          .addResourceLocations("/resources/");	
+          .addResourceHandler("/css/**", "/js/**", "/img/**", "/webjars/**")
+          .addResourceLocations("classpath:/css/", "classpath:/js/", "classpath:/img/", "/webjars/");
     }
     
     @Override
@@ -33,6 +27,7 @@ public class WebConfig implements WebMvcConfigurer{
         registry.jsp("/view/", ".jsp");
     }
 
+    // configure folder for template
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();

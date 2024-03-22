@@ -71,6 +71,9 @@ public class User {
         return email;
     }
 
+    public Role hasRole(){
+        return role;
+    }
     public Role getRole_id() {
         return role;
     }
@@ -101,5 +104,9 @@ public class User {
 
     private PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    public String getRole() {
+        return role.getName();
     }
 }
