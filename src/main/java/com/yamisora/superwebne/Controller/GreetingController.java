@@ -3,6 +3,10 @@ package com.yamisora.superwebne.controller;
 import java.net.http.HttpRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,12 +28,25 @@ public class GreetingController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
+    @MessageMapping("/application")
+    @SendTo("/all/notification")
+    public Message send(final Message message) {
+        return message;
+    }
 	@GetMapping("/greeting")
 	public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
 		model.addAttribute("name", name);
 		return "auth/greeting";
 	}
+
+
+    @GetMapping("/notification")
+    public String notification(){
+        return "notify";
+    }
 
     @GetMapping("/home")
     public String hello(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {

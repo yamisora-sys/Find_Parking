@@ -49,8 +49,9 @@ public class SecurityConfig {
             auth -> auth
                 .requestMatchers(request -> request.getServletPath().startsWith("/api")).permitAll()
                 // admin route
+                // matcher /ws/** permit all
+                .requestMatchers(request -> request.getServletPath().startsWith("/ws")).permitAll()
                 .requestMatchers("/admin").hasRole("Admin")
-                // if not have role redirect to No Access
                 .anyRequest().permitAll())
             .httpBasic(Customizer.withDefaults())
             .formLogin(form -> form
@@ -58,6 +59,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/home", true)
                 .failureUrl("/login?error=true"))
+            // if not have role redirect to No Access
             .exceptionHandling(exception -> exception
                 .accessDeniedPage("/no-access"));
         return http.build();
