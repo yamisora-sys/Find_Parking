@@ -21,6 +21,7 @@ public class UserDetailsConfig implements UserDetails{
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String role = user.hasRole().getName();
         GrantedAuthority authority = new SimpleGrantedAuthority(role);
+        
         return Collections.singletonList(authority);
     }
 
