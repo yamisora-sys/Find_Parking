@@ -2,14 +2,13 @@
 <html>
 <head>
     <title>Notify</title>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <link rel="stylesheet" href="css/toastr.min.css">
-    
+
+    <script src="js/jquery-3.7.1.min.js"></script>
     <script src="js/sockjs.min.js"></script>
     <script src="js/stomp.umd.min.js"></script>
     <script src="js/stomp.min.js"></script>
     <script src="js/toastr.min.js"></script>
-    <script src="js/jquery-3.7.1.min.js"></script>
 </head>
 <body>
      <button onclick="sendMessage()">Send Message</button>
