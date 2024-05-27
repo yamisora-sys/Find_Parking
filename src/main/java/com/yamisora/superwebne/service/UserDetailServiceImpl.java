@@ -10,13 +10,14 @@ import org.springframework.security.core.userdetails.UserCache;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import com.yamisora.superwebne.model.User;
 import com.yamisora.superwebne.repository.UserRepository;
 import com.yamisora.superwebne.config.UserDetailsConfig;
 
 @Configuration
 @Service
-public class CustomUserService  implements UserDetailsService {
+public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
@@ -33,7 +34,7 @@ public class CustomUserService  implements UserDetailsService {
     // cache user loggin
     @Bean
     public CachingUserDetailsService cachingUserDetailsService(UserCache userCache){
-        UserDetailsService delegate = new CustomUserService();
+        UserDetailsService delegate = new UserDetailServiceImpl();
         CachingUserDetailsService service = new CachingUserDetailsService(delegate);
         service.setUserCache(userCache);
         return service;

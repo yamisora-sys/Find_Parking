@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.rsocket.RSocketSecurity.AuthorizePayloadsSpec.Access;
 
-import com.yamisora.superwebne.service.CustomUserService;
+import com.yamisora.superwebne.service.UserDetailServiceImpl;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +29,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new CustomUserService();
+        return new UserDetailServiceImpl();
     }
 
     // authentication with DaoAuthenticationProvider

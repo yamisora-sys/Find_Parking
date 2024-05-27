@@ -14,6 +14,7 @@ import java.util.Date;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.BindParam;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ import com.yamisora.superwebne.model.Role;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private int id;
 
@@ -49,7 +50,17 @@ public class User {
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private LocalDateTime updated_at;
 
-    public User (){}
+    public User(){}
+
+    public User (
+        @BindParam("username") String userName,
+        @BindParam("email") String email,
+        @BindParam("password") String password
+    ){
+        this.email = email;
+        this.username = userName;
+        this.password = password;
+    }
     
     public User(String username, String email, String password, Role role) {
         super();
@@ -90,7 +101,7 @@ public class User {
         this.email = email;
     }
 
-    public void setRole_id(Role role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
