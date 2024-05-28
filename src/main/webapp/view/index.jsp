@@ -1,12 +1,13 @@
-<!DOCTYPE html>
 <html>
+
 <head>
-<title>Page Title</title>
+    <title>Page Title</title>
 </head>
+
 <body>
 
-<h1>This is a Heading</h1>
-<p>This is a paragraph.</p>
+    <div th:insert="layout/footer"></div>
 
 </body>
+
 </html>
