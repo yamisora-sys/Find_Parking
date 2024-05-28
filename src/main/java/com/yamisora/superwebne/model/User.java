@@ -45,10 +45,10 @@ public class User {
     private Role role;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime created_at;
+    private Date created_at;
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-    private LocalDateTime updated_at;
+    private Date updated_at;
 
     public User(){}
 

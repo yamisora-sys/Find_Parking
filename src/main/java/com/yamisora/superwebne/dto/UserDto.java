@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
+import com.yamisora.superwebne.model.Role;
 
 @Getter
 @Setter
@@ -23,4 +24,12 @@ public class UserDto {
     private String password;
 
     private int roleId;
+
+    public void loadFromDto(UserDto userDto) {
+        this.id = userDto.getId();
+        this.username = userDto.getUsername();
+        this.email = userDto.getEmail();
+        this.password = userDto.getPassword();
+        this.roleId = userDto.getRoleId();
+    }
 }
