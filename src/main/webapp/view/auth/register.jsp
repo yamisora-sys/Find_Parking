@@ -21,19 +21,20 @@
         <form th:action="@{/register}" th:object="${user}" method="post" id="registerForm">
             <div class="form-group">
                 <input type="text" name="username" placeholder="Username" th:field="*{username}" id="username">
-                <p class="error" id="usernameError">Username must be at least 8 characters long.</p>
+                <p class="error" id="usernameError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
             </div>
             <div class="form-group">
                 <input type="email" name="email" placeholder="Email" th:field="*{email}" id="email">
-                <p class="error" id="emailError">Please enter a valid email address.</p>
+                <p class="error" id="emailError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
             </div>
             <div class="form-group">
                 <input type="password" name="password" placeholder="Password" th:field="*{password}" id="password">
-                <p class="error" id="passwordError">Password must be at least 8 characters long and contain at least one letter, one number, and one special character.</p>
+                <!-- <p class="error" id="passwordError">Password must be at least 8 characters long and contain at least one letter, one number, and one special character.</p> -->
+                <p class="error" id="passwordError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
             </div>
             <div class="form-group">
-                <input type="password" name="confirmPassword" placeholder="Confirm Password" id="confirmPassword">
-                <p class="error" id="confirmPasswordError">Passwords do not match.</p>
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" id="confirmPassword" th:field="*{confirmPassword}">
+                <p class="error" id="confirmPasswordError" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
             </div>
             <div class="form-check d-flex justify-content-center mb-4">
                 <input class="form-check-input me-2" type="checkbox" id="termsCheckbox">
@@ -41,7 +42,8 @@
                     I agree to all statements in <a href="#!" class="text-body"><u>Terms of Service</u></a>
                 </label>
             </div>
-            <button type="button" class="register-btn" onclick="validateForm()">Register</button>
+            <!-- <button type="button" class="register-btn" onclick="">Register</button> -->
+            <button type="submit" class="register-btn">Register</button>
         </form>
         <div class="register-options">
             <p>Have an account? <a href="login.html" class="fw-bold text-body"><u>Login here</u></a></p>
@@ -92,7 +94,7 @@
             "debug": false,
             "newestOnTop": true,
             "progressBar": true,
-            "positionClass": "toast-top-center",
+            "positionClass": "toast-top-right",
             "preventDuplicates": true,
             "onclick": null,
             "showDuration": "300",

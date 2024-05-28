@@ -28,7 +28,7 @@ public class User {
 
     private int id;
 
-    @NotNull
+    @NotNull(message = "Username is required")
     @Column(unique = true)
     private String username;
 

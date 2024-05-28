@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.yamisora.superwebne.repository.UserRepository;
 
 import jakarta.servlet.http.HttpServlet;
+import jakarta.validation.Valid;
 
 import com.yamisora.superwebne.model.Role;
 import com.yamisora.superwebne.model.User;
@@ -40,21 +41,22 @@ public class AuthController {
     }
     
     @GetMapping("/register")
-    public String register(WebRequest request, Model model) {
-        model.addAttribute("user", new User());
+    public String register(@ModelAttribute("user") UserDto user) {
+        user.setRoleId(1);
         return "auth/register";
     }
 
     @PostMapping("/register")
-    public String createNewUser(User user) {
+    public String createNewUser(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult) {
         // set user role = 1
-        System.out.println("email" + user.getEmail());
-        System.out.println("username" + user.getUsername());
         Role userRole = roleRepository.findById(1).get();
-        user.setRole(userRole);
-        userRepository.save(user);
-        
-        return "redirect:/home";
+        if (bindingResult.hasErrors()) {
+            return "auth/register";
+        } else {
+            User newUser = new User(user.getUsername(), user.getEmail(), user.getPassword(), userRole);
+            userRepository.save(newUser);
+            return "redirect:/login";
+        }
     }
     
     @GetMapping("/")

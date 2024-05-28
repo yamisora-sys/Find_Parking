@@ -59,7 +59,7 @@ body {
     color: red;
     margin-top: 5px;
     font-size: 14px;
-    display: none;
+    display: block;
 }
 .register-btn {
     background: #1da1f2;

@@ -25,7 +25,6 @@ public class RequestController extends OncePerRequestFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         ContentCachingRequestWrapper cachingRequest = new ContentCachingRequestWrapper(request);
         // ContentCachingResponseWrapper cachingResponse = new ContentCachingResponseWrapper(response);
-        System.out.println(cachingRequest.getHeader("User-Agent") + " " + cachingRequest.getRequestURI() + " " + cachingRequest.getMethod() + " " + cachingRequest.getRemoteAddr() + " " + cachingRequest.getRemotePort() + " " + cachingRequest.getRemoteHost());
         String userAgent = cachingRequest.getHeader("User-Agent");
         String method = cachingRequest.getMethod();
         String requestUri = cachingRequest.getRequestURI();
