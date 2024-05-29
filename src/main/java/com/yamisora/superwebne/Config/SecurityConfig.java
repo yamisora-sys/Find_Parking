@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.rsocket.RSocketSecurity.AuthorizePayloadsSpec.Access;
-
+import org.springframework.cache.annotation.Cacheable;
 import com.yamisora.superwebne.service.UserDetailServiceImpl;
 
 @Configuration
@@ -34,6 +34,7 @@ public class SecurityConfig {
 
     // authentication with DaoAuthenticationProvider
     @Bean
+    @Cacheable("users")
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());

@@ -26,6 +26,8 @@ import com.yamisora.superwebne.repository.RoleRepository;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.context.request.WebRequest;
 import com.yamisora.superwebne.dto.UserDto;
+import java.util.HashMap;
+import java.util.Map;
 @Controller
 public class AuthController {
     @Autowired
@@ -51,6 +53,15 @@ public class AuthController {
         // set user role = 1
         Role userRole = roleRepository.findById(1).get();
         if (bindingResult.hasErrors()) {
+            System.out.println(bindingResult.getAllErrors());
+            Map<String, String> errors= new HashMap<>();
+            bindingResult.getFieldErrors().forEach(
+                    error -> errors.put(error.getField(), error.getDefaultMessage())
+            );
+            // print error
+            for(String key : errors.keySet()){
+                System.out.println(key + " : " + errors.get(key));
+            }
             return "auth/register";
         } else {
             User newUser = new User(user.getUsername(), user.getEmail(), user.getPassword(), userRole);
@@ -63,4 +74,6 @@ public class AuthController {
     public String index(){
         return "index";
     }
+
+    
 }

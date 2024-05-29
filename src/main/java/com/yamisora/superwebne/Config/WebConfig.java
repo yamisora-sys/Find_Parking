@@ -7,7 +7,12 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.thymeleaf.spring6.ISpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
+
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+
 import org.springframework.context.annotation.ComponentScan;
 @Configuration
 @EnableWebMvc
@@ -37,5 +42,12 @@ public class WebConfig implements WebMvcConfigurer{
         templateResolver.setTemplateMode("HTML5");
         templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
+    }
+
+    private ISpringTemplateEngine templateEngine(ISpringTemplateEngine templateEngine) {
+        SpringTemplateEngine engine = new SpringTemplateEngine();
+        engine.setTemplateResolver(templateResolver());
+        engine.addDialect(new LayoutDialect());
+        return engine;
     }
 }
