@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
-    <title>Login</title>
+    <title>Đăng nhập</title>
     <script src="js/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="css/toastr.min.css">
     <script src="js/toastr.min.js"></script>
@@ -13,20 +13,20 @@
         <div class="logo">
             <img src="img/parking_logo_rb.png" alt="Logo">
         </div>
-        <div class="login-title">Login to Find Parking</div>
+        <div class="login-title">Đăng nhập vào Find Parking</div>
         <form th:action="@{/login}" th:object="${user}" method="post" enctype="utf8" id="loginForm">
             <div class="form-group">
-                <input type="text" name="username" placeholder="Username" th:field="*{username}" id="username">
-                <p class="error" id="usernameError">Username must be at least 8 characters long.</p>
+                <input type="text" name="username" placeholder="Tên đăng nhập" th:field="*{username}" id="username">
+                <p class="error" id="usernameError">Tên đăng nhập phải có ít nhất 8 ký tự.</p>
             </div>
             <div class="form-group">
-                <input type="password" name="password" placeholder="Password" th:field="*{password}" id="password">
-                <p class="error" id="passwordError">Password must be at least 8 characters long and contain at least one letter, one number, and one special character.</p>
+                <input type="password" name="password" placeholder="Mật khẩu" th:field="*{password}" id="password">
+                <p class="error" id="passwordError">Mật khẩu phải có ít nhất 8 ký tự và chứa ít nhất một chữ cái, một số và một ký tự đặc biệt.</p>
             </div>
-            <button type="button" class="login-btn" onclick="validateForm()">Login</button>
+            <button type="button" class="login-btn" onclick="validateForm()">Đăng nhập</button>
         </form>
         <div class="login-options">
-            <a href="#">Forgot password?</a> or <a href="#">Sign up</a>
+            <a href="#">Quên mật khẩu?</a> hoặc <a href="#">Đăng ký</a>
         </div>
     </div>
 
@@ -51,7 +51,7 @@
 
         var toastr = window.toastr;
         if ('${param.error}' === 'true') {
-            toastr.error('Invalid username and password.', 'Error');
+            toastr.error('Tên đăng nhập hoặc mật khẩu không hợp lệ.', 'Lỗi');
         }
     </script>
 </body>
