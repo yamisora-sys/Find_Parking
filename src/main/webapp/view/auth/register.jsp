@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Đăng ký</title>
     <script src="js/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="css/toastr.min.css">
     <script src="js/toastr.min.js"></script>
@@ -17,10 +17,10 @@
         <div class="logo">
             <img src="img/parking_logo_rb.png" alt="Logo">
         </div>
-        <div class="register-title">Create an Account</div>
+        <div class="register-title">Tạo tài khoản</div>
         <form th:action="@{/register}" th:object="${user}" method="post" id="registerForm">
             <div class="form-group">
-                <input type="text" name="username" placeholder="Username" th:field="*{username}" id="username">
+                <input type="text" name="username" placeholder="Tên người dùng" th:field="*{username}" id="username">
                 <p class="error" id="usernameError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
             </div>
             <div class="form-group">
@@ -28,25 +28,23 @@
                 <p class="error" id="emailError" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
             </div>
             <div class="form-group">
-                <input type="password" name="password" placeholder="Password" th:field="*{password}" id="password">
-                <!-- <p class="error" id="passwordError">Password must be at least 8 characters long and contain at least one letter, one number, and one special character.</p> -->
+                <input type="password" name="password" placeholder="Mật khẩu" th:field="*{password}" id="password">
                 <p class="error" id="passwordError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
             </div>
             <div class="form-group">
-                <input type="password" name="confirmPassword" placeholder="Confirm Password" id="confirmPassword" th:field="*{confirmPassword}">
+                <input type="password" name="confirmPassword" placeholder="Xác nhận mật khẩu" id="confirmPassword" th:field="*{confirmPassword}">
                 <p class="error" id="confirmPasswordError" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></p>
             </div>
             <div class="form-check d-flex justify-content-center mb-4">
                 <input class="form-check-input me-2" type="checkbox" id="termsCheckbox">
                 <label class="form-check-label" for="termsCheckbox">
-                    I agree to all statements in <a href="#!" class="text-body"><u>Terms of Service</u></a>
+                    Tôi đồng ý với tất cả các điều khoản trong <a href="#!" class="text-body"><u>Điều khoản dịch vụ</u></a>
                 </label>
             </div>
-            <!-- <button type="button" class="register-btn" onclick="">Register</button> -->
-            <button type="submit" class="register-btn">Register</button>
+            <button type="submit" class="register-btn">Đăng ký</button>
         </form>
         <div class="register-options">
-            <p>Have an account? <a href="login.html" class="fw-bold text-body"><u>Login here</u></a></p>
+            <p>Đã có tài khoản? <a href="login.html" class="fw-bold text-body"><u>Đăng nhập tại đây</u></a></p>
         </div>
     </div>
 
@@ -79,7 +77,7 @@
             }
 
             if (!termsChecked) {
-                toastr.error('You must agree to the terms of service.', 'Error');
+                toastr.error('Bạn phải đồng ý với các điều khoản dịch vụ.', 'Lỗi');
                 isValid = false;
             }
 
