@@ -3,72 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tìm Chỗ Đậu Xe</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
-    <style>
-        /* Thiết lập lại CSS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa; 
-            color: #343a40;
-            line-height: 1.6;
-        }
-        
-        nav {
-            background-color: #343a40;
-            padding: 1rem;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .navbar-brand, .nav-link {
-            color: #ffffff;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .navbar-brand:hover, .nav-link:hover {
-            color: #d64747; 
-        }
-        
-        .navbar-nav {
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .nav-item {
-            /* margin-left: 1rem; */
-        }
-    </style>
+    <title>Tìm Bãi Đậu Xe</title>
+    <script src="js/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="css/toastr.min.css">
+    <script src="js/toastr.min.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
 </head>
 <body>
-    <!-- Thanh điều hướng -->
-    <nav th:fragment="header">
-        <div class="container">
-            <a class="navbar-brand" href="#">Find Parking</a>
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="#">Trang Chủ</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Về Chúng Tôi</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Liên Hệ</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Đăng Nhập</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Đăng Ký</a></li>
-            </ul>
+    <!-- Phần Header -->
+    <header class="header py-3" th:fragment="header">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center">
+            <a href="/"><img class="logo-img" src="img/parking_logo_rb.png" alt="Logo"></a>
+            <nav class="navbar navbar-expand-lg">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Bản đồ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/about">Về chúng tôi</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/contact">Liên hệ</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="auth-buttons">
+                <a href="/login" class="btn btn-primary me-2">Đăng nhập</a>
+                <a href="/register" class="btn btn-primary">Đăng ký</a>
+            </div>
         </div>
-    </nav>
+    </header>
+    <!-- Kết thúc Phần Header -->
+
+    <!-- Thư viện JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
