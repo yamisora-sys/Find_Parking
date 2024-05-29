@@ -59,7 +59,7 @@ public class User {
     ){
         this.email = email;
         this.username = userName;
-        this.password = password;
+        this.password = passwordEncoder().encode(password);
     }
     
     public User(String username, String email, String password, Role role) {
