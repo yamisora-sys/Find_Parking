@@ -13,23 +13,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Max;
-
 import com.yamisora.superwebne.interfaces.validation.PasswordMatching;
+import com.yamisora.superwebne.interfaces.validation.UniqueEmailValue;
+import com.yamisora.superwebne.interfaces.validation.UniqueUsernameValue;
 import com.yamisora.superwebne.model.Role;
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@PasswordMatching(password = "password", confirmPassword = "confirmPassword")
 public class UserDto {
     private int id;
 
     @NotEmpty(message = "Username is required")
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+    @UniqueUsernameValue(message = "Username already exists")
     private String username;
 
     @NotEmpty(message = "Email is required")
     @Email
+    @UniqueEmailValue(message = "Email already exists")
     private String email;
 
     @NotEmpty(message = "Password is required")
@@ -42,7 +44,7 @@ public class UserDto {
     @NotEmpty(message = "Confirm Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$", message = "Password must have at least one special character, number, and uppercase")
-    
+    @PasswordMatching(password = "password", confirmPassword = "confirmPassword", message = "Password not matching")
     private String confirmPassword;
 
     private int roleId;
