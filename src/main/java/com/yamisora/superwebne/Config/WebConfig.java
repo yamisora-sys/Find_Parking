@@ -10,34 +10,31 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.ISpringTemplateEngine;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
-
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
-import org.springframework.context.annotation.ComponentScan;
 @Configuration
 @EnableWebMvc
-// enable jpa repository for the project
 @EnableJpaRepositories(basePackages = "com.yamisora.superwebne.repository")
 // @ComponentScan(basePackages = "com.yamisora.superwebne.webapp")
+// fix
 public class WebConfig implements WebMvcConfigurer{
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-          .addResourceHandler("/css/**", "/js/**", "/img/**", "/webjars/**", "/xml/**")
-          .addResourceLocations("classpath:/css/", "classpath:/js/", "classpath:/img/", "/webjars/");
+          .addResourceHandler("/css/**", "/js/**", "/img/**", "/webjars/**", "/xml/**", "/view/**")
+          .addResourceLocations("classpath:/css/", "classpath:/js/", "classpath:/img/", "/webjars/", "classpath:/xml/", "classpath:/view/");
     }
     
     @Override
     public void configureViewResolvers(final ViewResolverRegistry registry) {
-        registry.jsp("/view/", ".jsp");
+        registry.jsp("view/", ".jsp");
     }
 
-    // configure folder for template
     @Bean
-    public SpringResourceTemplateResolver templateResolver() {
-        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-        templateResolver.setPrefix("/view/");
+    public ClassLoaderTemplateResolver templateResolver(){
+        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setPrefix("view/");
         templateResolver.setSuffix(".jsp");
         templateResolver.setTemplateMode("HTML5");
         templateResolver.setCharacterEncoding("UTF-8");

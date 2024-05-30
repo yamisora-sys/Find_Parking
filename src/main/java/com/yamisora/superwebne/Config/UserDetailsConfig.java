@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 import java.util.Collections;
 
 public class UserDetailsConfig implements UserDetails{
@@ -53,7 +52,6 @@ public class UserDetailsConfig implements UserDetails{
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
     @Override
     public boolean isEnabled() {
         return true;
