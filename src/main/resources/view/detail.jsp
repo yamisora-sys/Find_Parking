@@ -11,115 +11,81 @@
   <style>
     /* CSS tùy chỉnh */
     .parking-image {
-      max-width: 80%;
+      max-width: 100%;
       height: auto;
       margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .modal-content {
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .modal-header {
-      background-color: #007bff;
-      color: white;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-    }
-
-    .modal-title {
-      margin: 0 auto;
-    }
-
-    .form-group label {
-      font-weight: bold;
-    }
-
-    .input-group-text {
-      background-color: #007bff;
-      color: white;
-    }
-
-    .btn-primary {
-      background-color: #007bff;
-      border: none;
-    }
-
-    .btn-primary:hover {
-      background-color: #0056b3;
-    }
-
-    .btn-secondary {
-      border: none;
     }
   </style>
 </head>
 
 <body>
-  <div th:include="layout/header :: header"></div>
+    <div th:include="layout/header :: header"></div>
 
   <div class="container">
     <img src="img/baidauxe.webp" alt="Chỗ đậu xe" class="parking-image">
 
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="parking-details-modal-label">Chi tiết bãi đậu xe</h5>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label for="parking-status">Trạng thái</label>
-          <input type="text" class="form-control" id="parking-status" value="20/25 (Còn chỗ)" disabled>
-        </div>
-        <div class="form-group">
-          <label for="opening-hours">Giờ mở cửa</label>
-          <input type="text" class="form-control" id="opening-hours" value="8:00 - 22:00" disabled>
-        </div>
-        <div class="form-group">
-          <label for="license-plate">Biển số xe</label>
-          <input type="text" class="form-control" id="license-plate">
-        </div>
-        <div class="form-group">
-          <label for="parking-duration">Thời gian đậu xe (giờ)</label>
-          <input type="number" class="form-control" id="parking-duration">
-        </div>
-        <div class="form-group">
-          <label for="parking-rate">Giá giữ xe mỗi giờ</label>
-          <div class="input-group">
-            <input type="number" class="form-control" id="parking-rate" value="5000">
-            <div class="input-group-append">
-              <span class="input-group-text">VNĐ</span>
+    <!-- Modal Chi tiết bãi đậu xe -->
+    <!-- <div id="parking-details-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="parking-details-modal-label" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document"> -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="parking-details-modal-label">Chi tiết bãi đậu xe</h5>
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="parking-status">Trạng thái</label>
+              <input type="text" class="form-control" id="parking-status" value="20/25 (Còn chỗ)" disabled>
+            </div>
+            <div class="form-group">
+              <label for="opening-hours">Giờ mở cửa</label>
+              <input type="time" class="form-control" id="opening-hours" value="8:00 - 22:00" disabled>
+            </div>
+            <div class="form-group">
+              <label for="license-plate">Biển số xe</label>
+              <input type="text" class="form-control" id="license-plate">
+            </div>
+            <div class="form-group">
+              <label for="parking-duration">Thời gian đậu xe (giờ)</label>
+              <input type="number" class="form-control" id="parking-duration">
+            </div>
+            <div class="form-group">
+              <label for="parking-rate">Giá giữ xe mỗi giờ</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="parking-rate" value="5000">
+                <div class="input-group-append">
+                  <span class="input-group-text">VNĐ</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="payment-method">Hình thức thanh toán</label>
+              <select class="form-control" id="payment-method">
+                <option>Tiền mặt</option>
+                <option>Thẻ ngân hàng</option>
+                <option>Ví điện tử</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="total-amount">Tổng tiền</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="total-amount" readonly>
+                <div class="input-group-append">
+                  <span class="input-group-text">VNĐ</span>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="payment-method">Hình thức thanh toán</label>
-          <select class="form-control" id="payment-method">
-            <option>Tiền mặt</option>
-            <option>Thẻ ngân hàng</option>
-            <option>Ví điện tử</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="total-amount">Tổng tiền</label>
-          <div class="input-group">
-            <input type="text" class="form-control" id="total-amount" readonly>
-            <div class="input-group-append">
-              <span class="input-group-text">VNĐ</span>
-            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            <button type="button" class="btn btn-primary" onclick="calculateTotal()">Thanh toán</button>
           </div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" onclick="calculateTotal()">Thanh toán</button>
-      </div>
-    </div>
-  </div>
-
+    <!-- </div>
+  </div> -->
   <div th:include="layout/footer :: footer"></div>
 
   <!-- Bao gồm Bootstrap JS -->
