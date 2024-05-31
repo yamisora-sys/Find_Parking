@@ -45,7 +45,8 @@
             <button type="submit" class="register-btn">Đăng ký</button>
         </form>
         <div class="register-options">
-            <p>Đã có tài khoản? <a href="login.html" class="fw-bold text-body"><u>Đăng nhập tại đây</u></a></p>
+            <p>Đã có tài khoản? <a href="/login">Đăng nhập tại đây</a></p>
+            
         </div>
     </div>
 
