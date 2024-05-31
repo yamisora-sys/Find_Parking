@@ -86,4 +86,24 @@ public class AuthController {
     public String detail(){
         return "detail";
     }
+
+
+    // admin test sau này xoá đi
+    @GetMapping("/testadmin")
+    public String testadmin(){
+        return "testadmin/testadmin";
+    }
+    @GetMapping("/testadminpark")
+    public String testadminpark(){
+        return "testadmin/testadminpark";
+    }
+    @GetMapping("/adminreport")
+    public String adminreport(){
+        return "testadmin/adminreport";
+    }
+    @GetMapping("/adminsupport")
+    public String adminsupport(){
+        return "testadmin/adminsupport";
+    }
+    
 }
