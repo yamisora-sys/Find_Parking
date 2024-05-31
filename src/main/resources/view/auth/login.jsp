@@ -26,7 +26,7 @@
             <button type="button" class="login-btn" onclick="validateForm()">Đăng nhập</button>
         </form>
         <div class="login-options">
-            <a href="#">Quên mật khẩu?</a> hoặc <a href="#">Đăng ký</a>
+            <a href="#">Quên mật khẩu?</a> hoặc <a href="/register">Đăng ký</a>
         </div>
     </div>
 
