@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Google Maps Example</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=cocaiconcacaytuoilozlaykeycuatao"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=concactao"></script>
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
@@ -10,20 +10,32 @@
                 center: {lat: -34.397, lng: 150.644}
             });
 
-            fetch('/geocode?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA')
-                .then(response => response.json())
-                .then(data => {
-                    var location = data[0].geometry.location;
-                    var marker = new google.maps.Marker({
-                        position: {lat: location.lat, lng: location.lng},
-                        map: map
+            document.getElementById('getLocationBtn').addEventListener('click', function() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        var marker = new google.maps.Marker({
+                            position: pos,
+                            map: map
+                        });
+                        map.setCenter(pos);
+                    }, function() {
+                        alert('Error: The Geolocation service failed.');
                     });
-                    map.setCenter({lat: location.lat, lng: location.lng});
-                });
+                } else {
+                    alert('Error: Your browser doesn\'t support geolocation.');
+                }
+            });
         }
     </script>
 </head>
 <body onload="initMap()">
+    <div>
+        <button id="getLocationBtn">Get My Location</button>
+    </div>
     <div id="map" style="height: 500px; width: 100%;"></div>
 </body>
 </html>
