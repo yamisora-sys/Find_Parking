@@ -22,8 +22,8 @@ public class WebConfig implements WebMvcConfigurer{
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-          .addResourceHandler("/css/**", "/js/**", "/img/**", "/webjars/**", "/xml/**", "/view/**")
-          .addResourceLocations("classpath:/css/", "classpath:/js/", "classpath:/img/", "/webjars/", "classpath:/xml/", "classpath:/view/");
+          .addResourceHandler("/css/**", "/js/**", "/img/**", "/webjars/**", "/xml/**", "/view/**", "/lib/**")
+          .addResourceLocations("classpath:/css/", "classpath:/js/", "classpath:/img/", "/webjars/", "classpath:/xml/", "classpath:/view/", "classpath:/lib/");
     }
     
     @Override
@@ -40,6 +40,7 @@ public class WebConfig implements WebMvcConfigurer{
         templateResolver.setCharacterEncoding("UTF-8");
         return templateResolver;
     }
+
 
     private ISpringTemplateEngine templateEngine(ISpringTemplateEngine templateEngine) {
         SpringTemplateEngine engine = new SpringTemplateEngine();

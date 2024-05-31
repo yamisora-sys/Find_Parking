@@ -18,8 +18,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import jakarta.persistence.JoinColumn;;
 @Entity
+@Getter
+@Setter
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -36,8 +40,7 @@ public class Role {
     Set<Permission> role_permission;
     
     
-    public Role() {
-    }
+    public Role() {}
 
     public Role(String name) {
         super();
@@ -50,11 +53,15 @@ public class Role {
         this.description = description;
     }
 
-    public int getId() {
-        return id;
+    public boolean hasPermission(Permission permission) {
+        return role_permission.contains(permission);
     }
 
-    public String getName() {
-        return name;
+    public void attachPermission(Permission permission) {
+        role_permission.add(permission);
+    }
+
+    public void detachPermission(Permission permission) {
+        role_permission.remove(permission);
     }
 }
