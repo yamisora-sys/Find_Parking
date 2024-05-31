@@ -21,6 +21,7 @@ import com.yamisora.superwebne.model.Role;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@PasswordMatching(password = "password", confirmPassword = "confirmPassword", message = "Password not matching")
 public class UserDto {
     private int id;
 
@@ -44,7 +45,6 @@ public class UserDto {
     @NotEmpty(message = "Confirm Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$", message = "Password must have at least one special character, number, and uppercase")
-    @PasswordMatching(password = "password", confirmPassword = "confirmPassword", message = "Password not matching")
     private String confirmPassword;
 
     private int roleId;

@@ -3,6 +3,9 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import com.yamisora.superwebne.model.User;
 import com.yamisora.superwebne.repository.UserRepository;
+
+import org.springframework.beans.BeanWrapperImpl;
+
 import com.yamisora.superwebne.interfaces.validation.PasswordMatching;
 public class PasswordMatchingValidation implements ConstraintValidator<PasswordMatching, Object>{
         
@@ -18,9 +21,11 @@ public class PasswordMatchingValidation implements ConstraintValidator<PasswordM
         @Override
         public boolean isValid(Object object, ConstraintValidatorContext constraintValidatorContext) {
             try {
-                Object passwordObject = object.getClass().getDeclaredField(password).get(object);
-                Object confirmPasswordObject = object.getClass().getDeclaredField(confirmPassword).get(object);
-                return passwordObject != null && passwordObject.equals(confirmPasswordObject);
+                Object passwordValue = new BeanWrapperImpl(object).getPropertyValue(password);
+                Object confirmPasswordValue = new BeanWrapperImpl(object).getPropertyValue(confirmPassword);
+                String password = passwordValue.toString();
+                String confirmPassword= confirmPasswordValue.toString();
+                return password.equals(confirmPassword);
             } catch (Exception e) {
                 return false;
             }

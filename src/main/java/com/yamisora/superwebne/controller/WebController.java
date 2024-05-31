@@ -20,7 +20,11 @@ import org.springframework.security.core.Authentication;
 import com.yamisora.superwebne.model.User;
 import com.yamisora.superwebne.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
-
+import com.yamisora.superwebne.dto.UserDto;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 @Controller
 public class WebController {
 
@@ -79,4 +83,13 @@ public class WebController {
         return "admin/admin";
     }
     
+    @PostMapping("/test-register")
+    public @ResponseBody String register(@RequestBody @Valid UserDto user, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "Error";
+        }
+
+        return "User saved";
+    }
 }
