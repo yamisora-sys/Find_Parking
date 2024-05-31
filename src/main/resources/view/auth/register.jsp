@@ -18,7 +18,7 @@
             <img src="img/parking_logo_rb.png" alt="Logo">
         </div>
         <div class="register-title">Tạo tài khoản</div>
-        
+        <!-- PasswordMatching class -->
         <form th:action="@{/register}" th:object="${user}" method="post" id="registerForm">
             <div class="form-group">
                 <input type="text" name="username" placeholder="Tên người dùng" th:field="*{username}" id="username">
@@ -45,7 +45,8 @@
             <button type="submit" class="register-btn">Đăng ký</button>
         </form>
         <div class="register-options">
-            <p>Đã có tài khoản? <a href="login.html" class="fw-bold text-body"><u>Đăng nhập tại đây</u></a></p>
+            <p>Đã có tài khoản? <a href="/login">Đăng nhập tại đây</a></p>
+            
         </div>
     </div>
 

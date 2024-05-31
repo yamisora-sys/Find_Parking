@@ -1,0 +1,19 @@
+body {
+    background-color: #f8f9fa;
+}
+.sidebar {
+    height: 100%;
+    background-color: #343a40;
+}
+.sidebar a {
+    color: #ffffff;
+}
+.sidebar .nav-item:hover {
+    background-color: #495057;
+}
+.content {
+    padding: 20px;
+}
+.card {
+    margin-bottom: 20px;
+}

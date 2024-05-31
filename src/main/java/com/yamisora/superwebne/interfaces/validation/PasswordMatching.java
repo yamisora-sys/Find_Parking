@@ -1,24 +1,22 @@
 package com.yamisora.superwebne.interfaces.validation;
 
-
 import java.lang.annotation.*;
-import com.yamisora.superwebne.validation.PasswordMatchingValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+import com.yamisora.superwebne.validation.PasswordMatchingValidation;
 
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = PasswordMatchingValidation.class)
 @Documented
-@Repeatable(PasswordMatching.List.class)
-@Constraint(validatedBy = PasswordMatchingValidator.class)
 public @interface PasswordMatching {
-    String message() default "Passwords do not match";
+    String message() default "Password not matching";
     Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+    Class <? extends Payload>[] payload() default {};
     String password();
     String confirmPassword();
 
-    @Target({ElementType.TYPE})
+    @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE, ElementType.FIELD})
     @Retention(RetentionPolicy.RUNTIME)
     @Documented
     @interface List {
