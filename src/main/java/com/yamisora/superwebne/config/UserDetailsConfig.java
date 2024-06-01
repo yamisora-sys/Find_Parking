@@ -1,7 +1,12 @@
 package com.yamisora.superwebne.config;
 
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.yamisora.superwebne.model.Permission;
 import com.yamisora.superwebne.model.User;
+import com.yamisora.superwebne.repository.PermissionRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -11,6 +16,9 @@ import java.util.Collections;
 public class UserDetailsConfig implements UserDetails{
     // UserDetails using database
     private User user;
+
+    @Autowired
+    private PermissionRepository permissionRepository;
 
     public UserDetailsConfig(User user){
         this.user = user;
@@ -59,5 +67,15 @@ public class UserDetailsConfig implements UserDetails{
 
     public User getUser(){
         return user;
+    }
+
+    // get user permission
+    public boolean havePermission(String permissionName){
+        Permission findPermission = permissionRepository.findByName(permissionName);
+        Permission permission = user.getRole().getPermission(findPermission);
+        if(permission == null){
+            return false;
+        }
+        return true;
     }
 }

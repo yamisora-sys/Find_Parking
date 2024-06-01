@@ -3,9 +3,15 @@
 
 <head>
     <title>Role Permission</title>
+    <link rel="stylesheet" th:href="@{/css/toastr.min.css}">
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script th:src="@{/js/toastr.min.js}"></script>
+
 </head>
 
 <body>
+    <p th:text="${notification}"></p>
+    <p th:text="${notificationType}"></p>
     <table border="1">
         <tr>
             <th>Role</th>
@@ -35,4 +41,28 @@
         </tr>
     </table>
 </body>
+<script type="text/javascript" th:inline="javascript" th:src="@{/js/notification/server-notification.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    var toastr = window.toastr;
+    let notification = [[${notification}]];
+    let notificationType = [[${notificationType}]];
+    switch (notificationType) {
+        case 'success':
+            toastr.success(notification);
+            break;
+        case 'error':
+            toastr.error(notification);
+            break;
+        case 'info':
+            toastr.info(notification);
+            break;
+        case 'warning':
+            toastr.warning(notification);
+            break;
+        default:
+            toastr.info(notification);
+            break;
+    }
+</script>
+
 </html>

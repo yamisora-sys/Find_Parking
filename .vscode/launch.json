@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SuperwebneApplication<superwebne>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.yamisora.superwebne.SuperwebneApplication",
+            "projectName": "superwebne",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

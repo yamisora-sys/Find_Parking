@@ -42,4 +42,6 @@ public class ParkingOrder {
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public ParkingOrder() {}
 }

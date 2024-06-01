@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.BindParam;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yamisora.superwebne.model.Role;
 
 @Entity
@@ -33,6 +34,7 @@ public class User {
     private String username;
 
     @NotNull
+    @JsonIgnore
     private String password;
 
     @NotNull

@@ -31,14 +31,6 @@ public class WebController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-
-    @MessageMapping("/application")
-    @SendTo("/all/notification")
-    public Message send(final Message message) {
-        return message;
-    }
 	@GetMapping("/greeting")
 	public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
 		model.addAttribute("name", name);
@@ -82,14 +74,5 @@ public class WebController {
         model.addAttribute("name", name);
         return "admin/admin";
     }
-    
-    @PostMapping("/test-register")
-    public @ResponseBody String register(@RequestBody @Valid UserDto user, BindingResult bindingResult) {
 
-        if (bindingResult.hasErrors()) {
-            return "Error";
-        }
-
-        return "User saved";
-    }
 }
