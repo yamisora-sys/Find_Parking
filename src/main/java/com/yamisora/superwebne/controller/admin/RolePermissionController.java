@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import com.yamisora.superwebne.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
-import com.yamisora.superwebne.component.NotificationComponent;
+import com.yamisora.superwebne.component.CustomModelAndView;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 @PreAuthorize("hasPermission('Read permission')")
@@ -37,12 +37,12 @@ public class RolePermissionController {
     public ModelAndView displayRolePermission(HttpSession session) {
         List<Role> roles = roleRepository.findAll().stream().toList();
         List<Permission> permissions = permissionRepository.findAll().stream().toList();
-        NotificationComponent notificationComponent = new NotificationComponent();
-        notificationComponent.addNotification("success", "Welcome to Role Permission Management");
-        notificationComponent.addObject("roles", roles);
-        notificationComponent.addObject("permissions", permissions);
-        notificationComponent.setViewName(indexView);
-        return notificationComponent.getModelAndView();
+        CustomModelAndView customModelAndView = new CustomModelAndView();
+        customModelAndView.setViewName(indexView);
+        customModelAndView.addObject("roles", roles);
+        customModelAndView.addObject("permissions", permissions);
+        customModelAndView.addNotification(CustomModelAndView.TYPE_INFO, "Role Permission Page");
+        return customModelAndView;
     }
 
     // attach permission to role
