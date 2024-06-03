@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Google Maps Example</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=concactao"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaHpCRCXttnCsGwTPU4-ZpPqS06Y8g_uI"></script>
     <script>
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
