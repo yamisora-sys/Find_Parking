@@ -25,17 +25,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
+import com.yamisora.superwebne.dto.NotificationDto;
 @Controller
 public class WebController {
 
     @Autowired
     private UserRepository userRepository;
 
-	@GetMapping("/greeting")
-	public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-		model.addAttribute("name", name);
-		return "greeting";
-	}
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+	// @GetMapping("/greeting")
+	// public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+	// 	model.addAttribute("name", name);
+	// 	return "greeting";
+	// }
 
     @GetMapping("/no-access")
     public String noAccess(){
@@ -44,20 +48,24 @@ public class WebController {
 
     @GetMapping("/notification")
     public String notification(){
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setType("info");
+        notificationDto.setMessage("Notification");
+        simpMessagingTemplate.convertAndSend("/public-notification", "Notification");
         return "notify";
     }
 
-    @GetMapping("/home")
-    public String hello(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("name", name);
-        if (authentication != null) {
-            model.addAttribute("username", authentication.getName());
-            model.addAttribute("authorities", authentication.getAuthorities());
-            model.addAttribute("role", authentication.getAuthorities().toString());
-        }
-        return "greeting";
-    }
+    // @GetMapping("/home")
+    // public String hello(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    //     model.addAttribute("name", name);
+    //     if (authentication != null) {
+    //         model.addAttribute("username", authentication.getName());
+    //         model.addAttribute("authorities", authentication.getAuthorities());
+    //         model.addAttribute("role", authentication.getAuthorities().toString());
+    //     }
+    //     return "greeting";
+    // }
 
     @GetMapping("/users")
     public @ResponseBody Iterable<User> getAllUsers() {
@@ -69,10 +77,5 @@ public class WebController {
         return userRepository.findByUsername(name);
     }
 
-    @GetMapping("/admin")
-    public String admin(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "admin/admin";
-    }
 
 }

@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import com.yamisora.superwebne.component.CustomModelAndView;
 import org.springframework.security.access.prepost.PreAuthorize;
-
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 @PreAuthorize("hasPermission('Read permission')")
 @Controller
 @RequestMapping("/admin")
@@ -32,6 +32,12 @@ public class RolePermissionController {
     @Autowired
     private PermissionRepository permissionRepository;
 
+    // send message to websocket
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+
+
 
     @GetMapping("/role-permission")
     public ModelAndView displayRolePermission(HttpSession session) {
@@ -42,6 +48,7 @@ public class RolePermissionController {
         customModelAndView.addObject("roles", roles);
         customModelAndView.addObject("permissions", permissions);
         customModelAndView.addNotification(CustomModelAndView.TYPE_INFO, "Role Permission Page");
+        simpMessagingTemplate.convertAndSend("/public-notification", "Role Permission Page");
         return customModelAndView;
     }
 
