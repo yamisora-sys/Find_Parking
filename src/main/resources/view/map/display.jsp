@@ -30,7 +30,17 @@ body { margin: 0; padding: 0; }
         map.setFog({}); // Set the default atmosphere style
     });
 
-    // The following values can be changed to control rotation speed:
+    // Current location 
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var userLocation = [position.coords.longitude, position.coords.latitude];
+            map.flyTo({ center: userLocation, zoom: 15 });
+
+            new mapboxgl.Marker({ color: "red" })
+                .setLngLat(userLocation)
+                .addTo(map);
+        });
+    }
 
     // At low zooms, complete a revolution every two minutes.
     const secondsPerRevolution = 240;
