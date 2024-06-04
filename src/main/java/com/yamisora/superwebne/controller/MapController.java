@@ -12,4 +12,10 @@ public class MapController {
         return "map/display";
     }
     
+    @GetMapping("/display-direction")
+    public String displayDirection() {
+        return "map/route";
+    }
 }
+
+
