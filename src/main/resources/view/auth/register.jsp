@@ -10,6 +10,9 @@
     <script src="js/toastr.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/auth/register.css">
+    <script src="js/sockjs.min.js"></script>
+    <script src="js/stomp.umd.min.js"></script>
+    <script src="js/stomp.min.js"></script>
 </head>
 
 <body>
@@ -50,44 +53,7 @@
         </div>
     </div>
 
-    <script type="text/javascript">
-        function validateForm() {
-            var isValid = true;
-            var username = $('#username').val();
-            var email = $('#email').val();
-            var password = $('#password').val();
-            var confirmPassword = $('#confirmPassword').val();
-            var termsChecked = $('#termsCheckbox').is(':checked');
-
-            $('.error').hide();
-
-            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-                $('#emailError').show();
-                isValid = false;
-            }
-
-            var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-            if (!passwordPattern.test(password)) {
-                $('#passwordError').show();
-                isValid = false;
-            }
-
-            if (password !== confirmPassword) {
-                $('#confirmPasswordError').show();
-                isValid = false;
-            }
-
-            if (!termsChecked) {
-                toastr.error('Bạn phải đồng ý với các điều khoản dịch vụ.', 'Lỗi');
-                isValid = false;
-            }
-
-            if (isValid) {
-                $('#registerForm').submit();
-            }
-        }
-
+    <!-- <script type="text/javascript">
         var toastr = window.toastr;
         toastr.options = {
             "closeButton": true,
@@ -106,7 +72,8 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
-    </script>
+    </script> -->
+    <script type="text/javascript" th:src="@{/js/notification/realtime-notification.js}"></script>
 </body>
 
 </html>

@@ -68,14 +68,4 @@ public class UserDetailsConfig implements UserDetails{
     public User getUser(){
         return user;
     }
-
-    // get user permission
-    public boolean havePermission(String permissionName){
-        Permission findPermission = permissionRepository.findByName(permissionName);
-        Permission permission = user.getRole().getPermission(findPermission);
-        if(permission == null){
-            return false;
-        }
-        return true;
-    }
 }

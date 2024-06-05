@@ -22,4 +22,9 @@ public class ParkingCategory {
     private String description;
 
     public ParkingCategory() {}
+
+    public ParkingCategory(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

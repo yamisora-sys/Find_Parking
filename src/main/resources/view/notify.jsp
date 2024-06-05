@@ -11,24 +11,10 @@
     <script src="js/stomp.min.js"></script>
 </head>
 <body>
-     <button onclick="sendMessage()">Send Message</button>
+     <button onclick="sendMessage('info')">Send Info</button>
+        <button onclick="sendMessage('success')">Send Success</button>
+        <button onclick="sendMessage('warning')">Send Warning</button>
+        <button onclick="sendMessage('error')">Send Error</button>
 </body>
-<script  type="text/javascript">
-    var socket = new SockJS('/ws');
-    var stompClient = Stomp.over(socket);
-    var toastr = window.toastr;
-    stompClient.connect({}, function(frame) {
-        console.log('Connected: ' + frame);
-        stompClient.subscribe('/all/messages', function(result) {
-            show(JSON.parse(result.body));
-            console.log(result);
-        });
-        
-    });
-
-    function sendMessage() {
-        var text = "Hello test message";
-        stompClient.send("/app/message", {}, JSON.stringify({text: text}));
-    }
-</script>
+<script  type="text/javascript" th:src="@{/js/notification/realtime-notification.js}"></script>
 </html>

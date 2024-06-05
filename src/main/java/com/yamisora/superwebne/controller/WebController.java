@@ -25,25 +25,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
+import com.yamisora.superwebne.dto.NotificationDto;
 @Controller
 public class WebController {
 
     @Autowired
     private UserRepository userRepository;
 
-	@GetMapping("/greeting")
-	public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-		model.addAttribute("name", name);
-		return "greeting";
-	}
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
+
+	// @GetMapping("/greeting")
+	// public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+	// 	model.addAttribute("name", name);
+	// 	return "greeting";
+	// }
 
     @GetMapping("/no-access")
     public String noAccess(){
         return "no-access";
     }
 
+    @GetMapping("/admin")
+    public String admin(){
+        return "greating";
+    }
     @GetMapping("/notification")
     public String notification(){
+        NotificationDto notificationDto = new NotificationDto();
+        notificationDto.setType("info");
+        notificationDto.setMessage("Notification");
+        simpMessagingTemplate.convertAndSend("/public-notification", "Notification");
         return "notify";
     }
 
@@ -69,10 +81,5 @@ public class WebController {
         return userRepository.findByUsername(name);
     }
 
-    @GetMapping("/admin")
-    public String admin(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "admin/admin";
-    }
 
 }

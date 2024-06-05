@@ -7,8 +7,7 @@
   <title>Feedback & Support</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/admin/adnav.css">
-
+  <link rel="stylesheet" th:href="@{/css/admin/adnav.css}">
 
   <style>
     .response-message {
