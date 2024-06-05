@@ -11,6 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class IndexController {
     @GetMapping("index")
     public String index() {
-        return "admin/admin";
+        return "admin/index";
     }
 }
