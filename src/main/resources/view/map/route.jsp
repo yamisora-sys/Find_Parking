@@ -22,9 +22,21 @@ body { margin: 0; padding: 0; }
         container: 'map',
         // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
         style: 'mapbox://styles/mapbox/streets-v12',
-        center: [-79.4512, 43.6568],
+        center: [106.660172, 10.762622],
         zoom: 13
     });
+
+    // Current location 
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var userLocation = [position.coords.longitude, position.coords.latitude];
+            map.flyTo({ center: userLocation, zoom: 15 });
+
+            new mapboxgl.Marker({ color: "red" })
+                .setLngLat(userLocation)
+                .addTo(map);
+        });
+    }
 
     map.addControl(
         new MapboxDirections({
