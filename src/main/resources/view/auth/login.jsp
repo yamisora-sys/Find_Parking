@@ -33,16 +33,16 @@
     <script type="text/javascript">
         function validateForm() {
             var isValid = true;
-            var username = $('#username').val();
-            var password = $('#password').val();
-            $('#usernameError').hide();
-            $('#passwordError').hide();
+            // var username = $('#username').val();
+            // var password = $('#password').val();
+            // $('#usernameError').hide();
+            // $('#passwordError').hide();
 
-            var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-            if (!passwordPattern.test(password)) {
-                $('#passwordError').show();
-                isValid = false;
-            }
+            // var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+            // if (!passwordPattern.test(password)) {
+            //     $('#passwordError').show();
+            //     isValid = false;
+            // }
 
             if (isValid) {
                 $('#loginForm').submit();

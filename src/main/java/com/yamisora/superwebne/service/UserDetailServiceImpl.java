@@ -23,20 +23,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     // load user by username
     @Override
-    @Cacheable
+    @Cacheable("users")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null){
             throw new UsernameNotFoundException("User not found");
         }
         return new UserDetailsConfig(user);
-    }
-    // cache user loggin
-    @Bean
-    public CachingUserDetailsService cachingUserDetailsService(UserCache userCache){
-        UserDetailsService delegate = new UserDetailServiceImpl();
-        CachingUserDetailsService service = new CachingUserDetailsService(delegate);
-        service.setUserCache(userCache);
-        return service;
     }
 }

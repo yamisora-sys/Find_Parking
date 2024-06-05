@@ -46,6 +46,10 @@ public class WebController {
         return "no-access";
     }
 
+    @GetMapping("/admin")
+    public String admin(){
+        return "greating";
+    }
     @GetMapping("/notification")
     public String notification(){
         NotificationDto notificationDto = new NotificationDto();
@@ -55,17 +59,17 @@ public class WebController {
         return "notify";
     }
 
-    // @GetMapping("/home")
-    // public String hello(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //     model.addAttribute("name", name);
-    //     if (authentication != null) {
-    //         model.addAttribute("username", authentication.getName());
-    //         model.addAttribute("authorities", authentication.getAuthorities());
-    //         model.addAttribute("role", authentication.getAuthorities().toString());
-    //     }
-    //     return "greeting";
-    // }
+    @GetMapping("/home")
+    public String hello(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("name", name);
+        if (authentication != null) {
+            model.addAttribute("username", authentication.getName());
+            model.addAttribute("authorities", authentication.getAuthorities());
+            model.addAttribute("role", authentication.getAuthorities().toString());
+        }
+        return "greeting";
+    }
 
     @GetMapping("/users")
     public @ResponseBody Iterable<User> getAllUsers() {
