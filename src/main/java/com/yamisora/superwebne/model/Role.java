@@ -1,6 +1,7 @@
 package com.yamisora.superwebne.model;
 
 
+import java.security.Timestamp;
 import java.util.Set;
 
 import org.hibernate.mapping.Collection;
@@ -38,6 +39,8 @@ public class Role {
     @ManyToMany
     @JoinTable(name = "role_permission", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
     Set<Permission> role_permission;
+    
+
     
     
     public Role() {}

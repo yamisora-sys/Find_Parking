@@ -23,8 +23,8 @@ public class RoleSeed implements CommandLineRunner {
     }
 
     String[][] roles = {
-        {"SuperAdmin", "SuperAdmin role"},
         {"Admin", "Admin role"},
+        {"Mod", "Moderator role"},
         {"User", "User role"},
     };
 
