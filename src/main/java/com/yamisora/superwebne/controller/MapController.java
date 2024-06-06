@@ -21,6 +21,11 @@ public class MapController {
     public String displayNearest() {
         return "map/nearest";
     }
+
+    @GetMapping("/coordinate")
+    public String displayCoordinate() {
+        return "map/coordinate";
+    }
 }
 
 
