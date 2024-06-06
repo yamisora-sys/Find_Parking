@@ -16,6 +16,11 @@ public class MapController {
     public String displayDirection() {
         return "map/route";
     }
+
+    @GetMapping("/display-nearest")
+    public String displayNearest() {
+        return "map/nearest";
+    }
 }
 
 
