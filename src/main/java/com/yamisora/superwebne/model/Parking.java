@@ -49,9 +49,6 @@ public class Parking {
     private String capacity;
 
     @NotNull
-    private String category;
-
-    @NotNull
     private String image;
 
     @NotNull

@@ -47,17 +47,17 @@ public class User {
     private Role role;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private Date created_at;
+    private Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
 
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-    private Date updated_at;
+    private Timestamp updatedAt = Timestamp.valueOf(LocalDateTime.now());
 
     public User(){}
 
     public User (
-        @BindParam("username") String userName,
-        @BindParam("email") String email,
-        @BindParam("password") String password
+        String userName,
+        String email,
+        String password
     ){
         this.email = email;
         this.username = userName;
@@ -119,7 +119,7 @@ public class User {
         return new BCryptPasswordEncoder();
     }
 
-    public String getRole() {
-        return role.getName();
+    public Role getRole() {
+        return role;
     }
 }

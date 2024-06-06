@@ -54,6 +54,7 @@ public class RolePermissionController {
 
     // attach permission to role
     @GetMapping("/role-permission/attach")
+    
     public String attachPermissionToRole(@RequestParam("role_id") int role_id, @RequestParam("permission_id") int permission_id, HttpSession session) {
         Role role = roleRepository.findById(role_id).get();
         Permission permission = permissionRepository.findById(permission_id).get();
@@ -69,6 +70,31 @@ public class RolePermissionController {
         Permission permission = permissionRepository.findById(permission_id).get();
         role.getRole_permission().remove(permission);
         roleRepository.save(role);
+        return "redirect:/admin/role-permission";
+    }
+
+    @GetMapping("/role-permission/attach-all")
+    public String attachAllPermissionToRole(@RequestParam("role_id") int role_id, HttpSession session) {
+        Role role = roleRepository.findById(role_id).get();
+        List<Permission> permissions = permissionRepository.findAll().stream().toList();
+        role.getRole_permission().addAll(permissions);
+        roleRepository.save(role);
+        return "redirect:/admin/role-permission";
+    }
+
+    @GetMapping("/role-permission/detach-all")
+    public String detachAllPermissionFromRole(@RequestParam("role_id") int role_id, HttpSession session) {
+        Role role = roleRepository.findById(role_id).get();
+        role.getRole_permission().clear();
+        roleRepository.save(role);
+        return "redirect:/admin/role-permission";
+    }
+    @GetMapping("/role-permission/attach-all-role")
+    public String attachAllRoleToPermission(@RequestParam("permission_id") int permission_id, HttpSession session) {
+        Permission permission = permissionRepository.findById(permission_id).get();
+        List<Role> roles = roleRepository.findAll().stream().toList();
+        permission.getPermission_role().addAll(roles);
+        permissionRepository.save(permission);
         return "redirect:/admin/role-permission";
     }
 }

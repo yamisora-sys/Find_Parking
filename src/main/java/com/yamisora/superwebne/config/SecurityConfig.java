@@ -52,8 +52,10 @@ public class SecurityConfig {
                 // admin route
                 // matcher /ws/** permit all
                 .requestMatchers(request -> request.getServletPath().startsWith("/ws")).permitAll()
-                .requestMatchers("/admin").hasRole("Admin")
-                .anyRequest().permitAll())
+                .requestMatchers("/admin/*").hasRole("Admin")
+                .requestMatchers("/api").permitAll()
+                .anyRequest().permitAll()
+                )
             .httpBasic(Customizer.withDefaults())
             .formLogin(form -> form
                 .loginPage("/login")

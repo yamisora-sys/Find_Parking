@@ -43,7 +43,7 @@ public class UserDetailsConfig implements UserDetails{
     }
 
     public String getRole(){
-        return user.getRole();
+        return user.getRole().getName();
     }
 
     @Override

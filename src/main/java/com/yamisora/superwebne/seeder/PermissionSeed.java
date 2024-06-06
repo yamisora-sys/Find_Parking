@@ -17,6 +17,8 @@ public class PermissionSeed implements CommandLineRunner{
     private PermissionRepository permissionRepository;
 
     String[][] permissions = {
+        {"Fullcontrol", "Fullcontrol permission"},
+        {"Access Admindashboard", "access admin dashboard"},
         {"Create Permission", "Create permission"},
         {"Read Permission", "Read permission"},
         {"Update Permission", "Update permission"},

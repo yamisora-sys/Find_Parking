@@ -19,8 +19,8 @@ public class UserSeed implements CommandLineRunner{
     private RoleRepository roleRepository;
 
     String[][] users = {
-        {"superadmin", "superadmin@gmail.com", "SuperAdmin"},
         {"admin", "admin@gmail.com", "Admin"},
+        {"mod", "mod@gmail.com", "Mod"},
         {"user", "user@gmail.com", "User"},
     };
 

@@ -14,11 +14,17 @@ public class ParkingCategorySeed {
     private ParkingCategoryRepository parkingCategoryRepository;
 
     String [][]data = {
-        {"Car", "Parking for Car"}
+        {"Car", "Parking for Car"},
+        {"Bike", "Parking for Bike"},
     };
 
     public void ParkingCategoryData() throws Exception{
-        System.out.println("Parking Category data has been seeded");
+        if(parkingCategoryRepository.count() == 0) {
+            for (String[] parkingCategory : data) {
+                parkingCategoryRepository.save(new ParkingCategory(parkingCategory[0], parkingCategory[1]));
+            }
+            System.out.println("Parking Category data has been seeded");
+        }
     }
 
     public void run(String... args) throws Exception {
