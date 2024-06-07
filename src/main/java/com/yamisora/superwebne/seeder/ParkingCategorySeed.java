@@ -4,8 +4,9 @@ import org.springframework.stereotype.Component;
 import com.yamisora.superwebne.model.ParkingCategory;
 import com.yamisora.superwebne.repository.ParkingCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 @Component
-public class ParkingCategorySeed {
+public class ParkingCategorySeed implements CommandLineRunner{
     public ParkingCategorySeed() {
         super();
     }
@@ -26,7 +27,7 @@ public class ParkingCategorySeed {
             System.out.println("Parking Category data has been seeded");
         }
     }
-
+    @Override
     public void run(String... args) throws Exception {
         ParkingCategoryData();
     }
