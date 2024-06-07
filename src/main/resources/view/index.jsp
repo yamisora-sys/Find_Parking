@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html layout:decorate="~{layout/home-layout}">
 
 <head>
   <title th:text="${pageTitle}">Tìm Bãi Đậu Xe</title>
@@ -29,7 +29,7 @@
   <!-- Kết thúc Header -->
 
   <!-- Banner -->
-  <div class="container">
+  <div layout:fragment="sections">
     <div class="banner">
       <h1>Tìm Bãi Đậu Xe</h1>
       <!-- Phần Tìm kiếm trong Banner -->

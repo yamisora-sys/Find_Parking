@@ -43,17 +43,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         // permit all /api
-        http.authenticationProvider(authenticationProvider());
-        http.authorizeHttpRequests(
+        http.authenticationProvider(authenticationProvider())
+        .authorizeHttpRequests(
             auth -> auth
                 .requestMatchers(request -> request.getServletPath().startsWith("/api")).permitAll()
                 // admin route
                 // matcher /ws/** permit all
                 .requestMatchers(request -> request.getServletPath().startsWith("/ws")).permitAll()
                 .requestMatchers("/admin/*").hasRole("Admin")
-                .requestMatchers("/api").permitAll()
                 .anyRequest().permitAll()
                 )
             .httpBasic(Customizer.withDefaults())

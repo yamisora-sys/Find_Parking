@@ -10,17 +10,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder.Default;
 import java.util.Date;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.BindParam;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yamisora.superwebne.model.Role;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 public class User {
@@ -45,6 +44,11 @@ public class User {
     @ManyToOne(targetEntity = Role.class)
     @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_USER_ROLE"))
     private Role role;
+
+
+    // set default value
+    @Column(name = "avatar", columnDefinition = "VARCHAR(255) DEFAULT 'https://nupet.vn/wp-content/uploads/2023/10/hinh-nen-ngo-nghinh-anh-meo-cute-nupet-12.jpg'")
+    private String avatar;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
@@ -89,6 +93,10 @@ public class User {
     }
     public Role getRole_id() {
         return role;
+    }
+
+    public String getAvatar(){
+        return avatar;
     }
 
     public void setUsername(String username) {

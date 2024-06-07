@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.security.core.Authentication;
 import com.yamisora.superwebne.model.User;
 import com.yamisora.superwebne.repository.UserRepository;
@@ -26,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import com.yamisora.superwebne.dto.NotificationDto;
+import com.yamisora.superwebne.component.CustomModelAndView;
+import org.springframework.security.core.Authentication;
 @Controller
 public class WebController {
 
@@ -71,15 +74,26 @@ public class WebController {
         return "greeting";
     }
 
-    @GetMapping("/users")
-    public @ResponseBody Iterable<User> getAllUsers() {
-        return userRepository.findAll();
+    @GetMapping("/")
+    public ModelAndView index(){
+        // get auth user
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomModelAndView modelAndView = new CustomModelAndView();
+        modelAndView.setViewName("index");
+        modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
+        return modelAndView;
     }
-
-    @GetMapping("/user")
-    public @ResponseBody User getUser(@RequestParam String name) {
-        return userRepository.findByUsername(name);
+    @GetMapping("/about")
+    public String about(){
+        return "about";
     }
-
+    @GetMapping("/contact")
+    public String contact(){
+        return "contact";
+    }
+    @GetMapping("/detail")
+    public String detail(){
+        return "detail";
+    }
 
 }

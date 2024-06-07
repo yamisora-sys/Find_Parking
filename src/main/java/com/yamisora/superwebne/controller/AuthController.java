@@ -87,22 +87,12 @@ public class AuthController {
         }
     }
     
-    @GetMapping("/")
-    public String index(){
-        return "index";
+
+    @GetMapping("/logout")
+    public String logout(){
+        return "auth/logout";
     }
-    @GetMapping("/about")
-    public String about(){
-        return "about";
-    }
-    @GetMapping("/contact")
-    public String contact(){
-        return "contact";
-    }
-    @GetMapping("/detail")
-    public String detail(){
-        return "detail";
-    }
+    
 
 
     // // admin test sau này xoá đi

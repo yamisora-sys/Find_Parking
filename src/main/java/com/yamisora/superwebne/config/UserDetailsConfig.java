@@ -46,6 +46,10 @@ public class UserDetailsConfig implements UserDetails{
         return user.getRole().getName();
     }
 
+    public String getAvatar(){
+        return user.getAvatar();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
