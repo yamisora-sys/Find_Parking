@@ -6,6 +6,7 @@ import com.yamisora.superwebne.model.ParkingCategory;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import com.yamisora.superwebne.model.User;
 import com.yamisora.superwebne.model.Parking;
@@ -34,16 +35,12 @@ public class ParkingDto {
     private String unitPrice;
 
     @NotNull
-    private User user;
+    private int owner_id;
 
     private Set<ParkingCategory> categories;
 
-
     @NotNull
-    private String capacity;
-
-    @NotNull
-    private String category;
+    private int capacity;
 
     @NotNull
     private String image;

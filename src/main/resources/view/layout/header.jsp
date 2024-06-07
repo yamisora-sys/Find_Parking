@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tìm Bãi Đậu Xe</title>
-    <script src="js/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="css/toastr.min.css">
-    <script src="js/toastr.min.js"></script>
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" th:href="@{css/toastr.min.css}">
+    <script th:src="@{js/toastr.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <script th:src="@{/js/popperjs.js}"></script>
 </head>
 
 <body>

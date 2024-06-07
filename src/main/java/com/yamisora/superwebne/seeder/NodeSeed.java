@@ -31,7 +31,7 @@ public class NodeSeed implements CommandLineRunner {
     public void NodeData() throws Exception {
         if (nodeRepository.count() == 0) {
             PythonRunner pythonRunner = new PythonRunner();
-            pythonRunner.runScript("node.py");
+            pythonRunner.runScript("node_data.py");
             System.out.println("Node data has been seeded");
         }
     }
