@@ -7,7 +7,9 @@
   <title>Admin Dashboard</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" th:href="@{/css/admin/adnav.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css" integrity="sha512-mQOTNh8gK8SmdDjvmFZKzrOZY7rG3ZmxOU78phd8zqlx1c9zJ7A9RjW8h1gdv8SQE6cRcBw5X3p1K5qX0MszjQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     .sidebar {
       height: 100vh;
@@ -15,12 +17,15 @@
       top: 0;
       left: 0;
       padding-top: 20px;
+      background-color: #4e73df;
+      color: #fff;
     }
 
     .sidebar h3 {
       text-align: center;
       padding-bottom: 20px;
       font-weight: bold;
+      width: 100%;
     }
 
     .nav-link {
@@ -47,7 +52,7 @@
 
 <body>
   <div th:fragment="adminnav">
-    <div class="sidebar bg-primary">
+    <div class="sidebar">
       <h3 class="text-white">Admin Dashboard</h3>
       <ul class="nav flex-column">
         <li class="nav-item">
