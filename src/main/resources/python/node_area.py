@@ -1,6 +1,8 @@
 import pandas as pd
 import mysql.connector
 import os
+import matplotlib.pyplot as plt
+import osmnx as ox
 
 db_connection = "mysql://localhost:3306/javaweb"
 

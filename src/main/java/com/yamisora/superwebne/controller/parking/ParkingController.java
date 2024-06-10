@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import com.yamisora.superwebne.repository.ParkingRepository;
-import com.yamisora.superwebne.repository.ParkingRepository;
 import com.yamisora.superwebne.model.Parking;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;

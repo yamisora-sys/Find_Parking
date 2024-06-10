@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.yamisora.superwebne.repository.ParkingRepository;
 import org.springframework.core.annotation.Order;
 @Component
-@Order(3)
+@Order(7)
 public class ParkingSeed  implements CommandLineRunner{
 
     @Autowired
