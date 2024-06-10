@@ -51,8 +51,8 @@
 
     <div layout:fragment="sections" class="container">
         <div class="profile-header">
-            <img src="img/parking_logo.png" alt="Ảnh Đại Diện">
-            <h2>${user.username}</h2>
+            <img th:src="${auth.avatar}" alt="Ảnh Đại Diện">
+            <h2 th:text="${auth.username}"></h2>
             <div class="profile-actions">
                 <a href="/edit-profile" class="btn btn-primary">Chỉnh Sửa Hồ Sơ</a>
                 <button class="btn btn-secondary">Đăng Xuất</button>
@@ -61,9 +61,9 @@
 
         <div class="profile-details">
             <h3>Thông Tin Cá Nhân</h3>
-            <p><strong>Tên:</strong> Nguyễn Văn A</p>
-            <p><strong>Email:</strong> email@example.com</p>
-            <p><strong>Số Điện Thoại:</strong> 0123456789</p>
+            <p><strong>Tên:</strong> <p th:text="${auth.username}"></p></p>
+            <p><strong>Email:</strong><p th:text="${auth.email}"></p></p>
+            <!-- <p><strong>Số Điện Thoại:</strong><p th:text="${auth.phone}"></p></p> -->
         </div>
         <h3>Danh Sách Bãi Đậu Xe Đã Đặt</h3>
         <div class="parking-list">
