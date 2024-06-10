@@ -5,8 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import com.yamisora.superwebne.repository.RoleRepository;
 import com.yamisora.superwebne.model.Role;
-
+import org.springframework.core.annotation.Order;
 @Component
+@Order(5)
 public class RoleSeed implements CommandLineRunner {
     
     public RoleSeed() {

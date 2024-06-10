@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component;
 import com.yamisora.superwebne.component.PythonRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.yamisora.superwebne.repository.ParkingRepository;
+import org.springframework.core.annotation.Order;
 @Component
+@Order(3)
 public class ParkingSeed  implements CommandLineRunner{
 
     @Autowired

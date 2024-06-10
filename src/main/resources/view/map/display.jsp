@@ -12,12 +12,14 @@ body { margin: 0; padding: 0; }
 </style>
 </head>
 <body>
-<div id="map"></div>
+<div id="map">
+    <div th:include="~{map/coordinate :: search-coordinate}"></div>
+</div>
 <script>
-	mapboxgl.accessToken = 'pk.eyJ1IjoibGFtZG8xMSIsImEiOiJjbHgwN3hoMDcwZzJzMmtxMHhseXpkaTA4In0.k2LXdcNHw5n1OASvF3tSkw';
+	mapboxgl.accessToken = 'pk.eyJ1IjoieWFtaXNvcmEiLCJhIjoiY2x4MDhsOXE2MGZlMDJtcHRmaWQxN20waSJ9.NYHCInPpPXOytI3kAe2OYQ';
     const map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v9',
+        style: 'mapbox://styles/yamisora/clx4wr6a5001i01pj0xm472qf',
         projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
         zoom: 1,
         center: [30, 15]

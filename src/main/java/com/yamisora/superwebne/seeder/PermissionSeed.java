@@ -5,7 +5,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.yamisora.superwebne.repository.PermissionRepository;
 import com.yamisora.superwebne.model.Permission;
+import org.springframework.core.annotation.Order;
 @Component
+@Order(4)
 public class PermissionSeed implements CommandLineRunner{
     
 

@@ -29,6 +29,9 @@ import org.springframework.validation.BindingResult;
 import com.yamisora.superwebne.dto.NotificationDto;
 import com.yamisora.superwebne.component.CustomModelAndView;
 import org.springframework.security.core.Authentication;
+import com.yamisora.superwebne.model.Parking;
+import com.yamisora.superwebne.repository.ParkingRepository;
+import java.util.List;
 @Controller
 public class WebController {
 
@@ -37,6 +40,9 @@ public class WebController {
 
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+
+    @Autowired
+    private ParkingRepository parkingRepository;
 
 	// @GetMapping("/greeting")
 	// public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
@@ -78,8 +84,10 @@ public class WebController {
     public ModelAndView index(){
         // get auth user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<Parking> parkings = parkingRepository.findAll();
         CustomModelAndView modelAndView = new CustomModelAndView();
         modelAndView.setViewName("index");
+        modelAndView.addObject("parkings", parkings);
         modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
         return modelAndView;
     }
