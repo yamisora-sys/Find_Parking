@@ -79,52 +79,12 @@
       <div class="parking-list">
         <!-- Mục Bãi đậu xe -->
         <div class="parking-item" th:each="parking : ${parkings}">
-          <img src="${paring.image}" alt="Bãi đậu xe 1">
+          <img th:src="${parking.image}" alt="Bãi đậu xe">
           <div class="details">
             <h5 th:text="${parking.name}"></h5>
-            <p th:text="${parking.node.getId()}"></p>
+            <p th:text="${parking.description}"></p>
           </div>
         </div>
-        <!-- Mục Bãi đậu xe -->
-        <div class="parking-item">
-          <img src="img/baidauxe.webp" alt="Bãi đậu xe 2">
-          <div class="details">
-            <h5>Bãi đậu xe 2</h5>
-            <p>Chi tiết vị trí...</p>
-          </div>
-        </div>
-        <!-- Mục Bãi đậu xe -->
-        <div class="parking-item">
-          <img src="img/baidauxe.webp" alt="Bãi đậu xe 3">
-          <div class="details">
-            <h5>Bãi đậu xe 3</h5>
-            <p>Chi tiết vị trí...</p>
-          </div>
-        </div>
-        <div class="parking-item">
-            <img src="img/baidauxe.webp" alt="Bãi đậu xe 1">
-            <div class="details">
-              <h5>Bãi đậu xe 1</h5>
-              <p>Chi tiết vị trí...</p>
-            </div>
-          </div>
-          <!-- Mục Bãi đậu xe -->
-          <div class="parking-item">
-            <img src="img/baidauxe.webp" alt="Bãi đậu xe 2">
-            <div class="details">
-              <h5>Bãi đậu xe 2</h5>
-              <p>Chi tiết vị trí...</p>
-            </div>
-          </div>
-          <!-- Mục Bãi đậu xe -->
-          <div class="parking-item">
-            <img src="img/baidauxe.webp" alt="Bãi đậu xe 3">
-            <div class="details">
-              <h5>Bãi đậu xe 3</h5>
-              <p>Chi tiết vị trí...</p>
-            </div>
-          </div>
-        <!-- Thêm các mục Bãi đậu xe khác cần thiết -->
       </div>
     </div>
   </div>

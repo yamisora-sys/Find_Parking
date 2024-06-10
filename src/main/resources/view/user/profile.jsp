@@ -52,7 +52,7 @@
     <div layout:fragment="sections" class="container">
         <div class="profile-header">
             <img src="img/parking_logo.png" alt="Ảnh Đại Diện">
-            <h2>Nguyễn Văn A</h2>
+            <h2>${user.username}</h2>
             <div class="profile-actions">
                 <a href="/edit-profile" class="btn btn-primary">Chỉnh Sửa Hồ Sơ</a>
                 <button class="btn btn-secondary">Đăng Xuất</button>
