@@ -63,7 +63,7 @@
   <div th:include="layout/header :: header"></div>
 
   <div class="container">
-    <img src="img/baidauxe.webp" alt="Chỗ đậu xe" class="parking-image">
+    <img th:src="${parking.image}" alt="Chỗ đậu xe" class="parking-image">
 
     <div class="modal-content">
       <div class="modal-header">
@@ -73,6 +73,10 @@
         <div class="form-group">
           <label for="parking-status">Trạng thái</label>
           <input type="text" class="form-control" id="parking-status" value="20/25 (Còn chỗ)" disabled>
+        </div>
+        <div class="form-group">
+          <label for="parking-status">Giới thiệu</label>
+          <input type="text" class="form-control" id="parking-description" th:value=${parking.description} disabled>
         </div>
         <div class="form-group">
           <label for="opening-hours">Giờ mở cửa</label>
@@ -115,7 +119,31 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" onclick="calculateTotal()">Thanh toán</button>
+        <button type="button" class="btn btn-primary" onclick="calculateTotal(); showPaymentSuccess()">Thanh toán</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Success Modal -->
+  <div class="modal fade" id="paymentSuccessModal" tabindex="-1" role="dialog" aria-labelledby="paymentSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="paymentSuccessModalLabel">Thanh toán thành công</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Thanh toán của bạn đã được xử lý thành công!</p>
+          <p><strong>Biển số xe:</strong> <span id="confirm-license-plate"></span></p>
+          <p><strong>Thời gian đậu xe:</strong> <span id="confirm-parking-duration"></span> giờ</p>
+          <p><strong>Tổng tiền:</strong> <span id="confirm-total-amount"></span> VNĐ</p>
+          <p><strong>Hình thức thanh toán:</strong> <span id="confirm-payment-method"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        </div>
       </div>
     </div>
   </div>
@@ -135,6 +163,21 @@
       var rate = parseInt(document.getElementById("parking-rate").value);
       var total = duration * rate;
       document.getElementById("total-amount").value = total.toLocaleString();
+    }
+
+    // Hàm hiển thị thông tin thanh toán thành công
+    function showPaymentSuccess() {
+      var licensePlate = document.getElementById("license-plate").value;
+      var duration = document.getElementById("parking-duration").value;
+      var totalAmount = document.getElementById("total-amount").value;
+      var paymentMethod = document.getElementById("payment-method").value;
+
+      document.getElementById("confirm-license-plate").innerText = licensePlate;
+      document.getElementById("confirm-parking-duration").innerText = duration;
+      document.getElementById("confirm-total-amount").innerText = totalAmount;
+      document.getElementById("confirm-payment-method").innerText = paymentMethod;
+
+      $('#paymentSuccessModal').modal('show');
     }
   </script>
 </body>

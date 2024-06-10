@@ -37,7 +37,7 @@
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
-                <label for="location">Địa điểm</label>
+                <label for="address">Nhập địa chỉ:</label>
                 <input style="padding-bottom: 14px" type="text" class="form-control" id="location" placeholder="Nhập địa điểm">
               </div>
             </div>
