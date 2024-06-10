@@ -15,7 +15,8 @@ import lombok.Getter;
 import lombok.Setter;
 import java.util.Set;
 
-
+@Getter
+@Setter
 public class ParkingDto {
     @NotNull
     private String name;
@@ -33,7 +34,7 @@ public class ParkingDto {
     private String phone;
 
     private String unitPrice;
-
+    
     @NotNull
     private int owner_id;
 
@@ -47,6 +48,11 @@ public class ParkingDto {
 
     @NotNull
     private String status;
+
+
+    private float longitude;
+
+    private float latitude;
 
     public ParkingDto() {}
 }

@@ -28,4 +28,9 @@ public class Node {
 
     public Node() {
     }
+
+    public Node(Float longitude, Float latitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
 }
