@@ -89,22 +89,56 @@ public class WebController {
         modelAndView.setViewName("index");
         modelAndView.addObject("parkings", parkings);
         modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
+
         return modelAndView;
     }
     @GetMapping("/about")
-    public String about(){
-        return "about";
+    public ModelAndView about(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomModelAndView modelAndView = new CustomModelAndView();
+        modelAndView.setViewName("about");
+        modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
+        return modelAndView;
     }
     @GetMapping("/contact")
-    public String contact(){
-        return "contact";
+    public ModelAndView contact(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomModelAndView modelAndView = new CustomModelAndView();
+        modelAndView.setViewName("contact");
+        modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
+        return modelAndView;
     }
     @GetMapping("/detail")
-    public String detail(){
-        return "detail";
+    public ModelAndView detail(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomModelAndView modelAndView = new CustomModelAndView();
+        modelAndView.setViewName("detail");
+        modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
+        return modelAndView;
     }
     @GetMapping("/add-park")
-    public String addparking(){
-        return "parking/add-parking";
+    public ModelAndView addparking(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomModelAndView modelAndView = new CustomModelAndView();
+        modelAndView.setViewName("parking/add-parking");
+        modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
+        return modelAndView;
+    }
+
+    @GetMapping("/profile")
+    public ModelAndView profile(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomModelAndView modelAndView = new CustomModelAndView();
+        modelAndView.setViewName("user/profile");
+        modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
+        return modelAndView;
+    }
+    @GetMapping("/edit-profile")
+    public ModelAndView editprofile(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomModelAndView modelAndView = new CustomModelAndView();
+        modelAndView.setViewName("user/edit-profile");
+        modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
+        return modelAndView;
     }
 }
