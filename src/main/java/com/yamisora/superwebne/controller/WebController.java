@@ -107,4 +107,13 @@ public class WebController {
     public String addparking(){
         return "parking/add-parking";
     }
+
+    @GetMapping("/profile")
+    public String profile(){
+        return "user/profile";
+    }
+    @GetMapping("/edit-profile")
+    public String editprofile(){
+        return "user/edit-profile";
+    }
 }
