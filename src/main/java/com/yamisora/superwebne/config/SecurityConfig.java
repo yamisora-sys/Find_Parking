@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.rsocket.RSocketSecurity.AuthorizePayloadsSpec.Access;
 import org.springframework.cache.annotation.Cacheable;
 import com.yamisora.superwebne.service.UserDetailServiceImpl;
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
@@ -46,6 +47,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {
         // permit all /api
         http.authenticationProvider(authenticationProvider())
+        .sessionManagement(session -> session
+            .maximumSessions(1)
+            .maxSessionsPreventsLogin(true)
+            .expiredUrl("/login"))
         .authorizeHttpRequests(
             auth -> auth
                 .requestMatchers(request -> request.getServletPath().startsWith("/api")).permitAll()

@@ -38,60 +38,82 @@
   <div layout:fragment="sections" class="container mt-5">
     <div class="form-container">
       <h2 class="text-center mb-4">Thêm Mới Bãi Đỗ Xe</h2>
-      <form id="addParkingForm" method="post" action="#">
+      <form id="addParkingForm" method="post" action="#" 
+        th:object="${newparking}" th:action="@{/parking/create}" enctype="multipart/form-data">
+        <!-- ownerId = auth.id -->
         <div class="row mb-3">
           <div class="col-md-6 form-group">
             <label for="name" class="form-label">Tên Bãi Đỗ Xe</label>
-            <input type="text" class="form-control" id="name" name="name" required>
+            <input type="text" class="form-control" id="name" name="name" required
+              th:field="*{name}">
+            
           </div>
           <div class="col-md-6 form-group">
             <label for="address" class="form-label">Địa Chỉ</label>
-            <input type="text" class="form-control" id="address" name="address" required>
+            <input type="text" class="form-control" id="address" name="address" required
+              th:field="*{address}">
             <button type="button" class="btn btn-primary mt-2" onclick="getCoordinates()">Lấy Tọa Độ</button>
+            <!-- longitude -->
+            <input type="string" id="longitude" name="longitude" th:field="*{longitude}" required hidden>
+            <!-- latitude -->
+            <input type="string" id="latitude" name="latitude" th:field="*{latitude}"  required hidden>
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-md-6 form-group">
             <label for="price" class="form-label">Giá</label>
-            <input type="text" class="form-control" id="price" name="price" required>
+            <input type="text" class="form-control" id="price" name="price" required 
+              th:field="*{price}"
+            >
           </div>
           <div class="col-md-6 form-group">
             <label for="unitPrice" class="form-label">Đơn Vị Giá</label>
-            <input type="text" class="form-control" id="unitPrice" name="unitPrice">
+            <input type="text" class="form-control" id="unitPrice" name="unitPrice"
+              th:field="*{unitPrice}" required
+            >
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-md-6 form-group">
             <label for="description" class="form-label">Mô Tả</label>
-            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            <textarea class="form-control" id="description" name="description" rows="3" required
+              th:field="*{description}"
+            ></textarea>
           </div>
           <div class="col-md-6 form-group">
             <label for="phone" class="form-label">Số Điện Thoại</label>
-            <input type="text" class="form-control" id="phone" name="phone" required>
+            <input type="text" class="form-control" id="phone" name="phone" required
+              th:field="*{phone}"
+            >
           </div>
-        </div>
+        </div>153
         <div class="row mb-3">
           <div class="col-md-6 form-group">
             <label for="categories" class="form-label">Danh Mục</label>
-            <select multiple class="form-control" id="categories" name="categories">
-              <option value="1">Xe Hơi</option>
-              <option value="2">Xe Máy</option>
-              <option value="3">Xe Tải</option>
+            <select multiple class="form-control" id="categories" name="categories" required
+            >
+              <option th:each="category : ${parkingCategories}" th:value="${category.id}" th:text="${category.name}"></option>
             </select>
           </div>
           <div class="col-md-6 form-group">
             <label for="capacity" class="form-label">Sức Chứa</label>
-            <input type="number" class="form-control" id="capacity" name="capacity" required>
+            <input type="number" class="form-control" id="capacity" name="capacity" required
+              th:field="*{capacity}"
+            >
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-md-6 form-group">
             <label for="image" class="form-label">Ảnh</label>
-            <input type="file" class="form-control" id="image" name="image" required>
+            <input type="text" class="form-control" id="image" name="image" required
+              th:field="*{image}"
+            >
           </div>
           <div class="col-md-6 form-group">
             <label for="status" class="form-label">Trạng Thái</label>
-            <input type="text" class="form-control" id="status" name="status" required>
+            <input type="text" class="form-control" id="status" name="status" required
+              th:field="*{status}"
+            >
           </div>
         </div>
         <div id="map"></div>
@@ -185,10 +207,14 @@
             const longitude = data.results[0].geometry.lng;
             console.log(mapLatitude, mapLongitude);
             map.flyTo({center: [longitude, latitude], zoom: 15});
+            // clear all markers
+            document.querySelectorAll('.mapboxgl-marker').forEach(marker => marker.remove());
             new mapboxgl.Marker({color: "red"})
               .setLngLat([longitude, latitude])
               .addTo(map);
-            // document.getElementById("result").innerHTML = `Latitude: ${latitude}, Longitude: ${longitude}`;
+            // set input value
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
           } else {
             // document.getElementById("result").innerHTML = "Không tìm thấy tọa độ cho địa chỉ này.";
           }
@@ -197,8 +223,11 @@
           console.error(error);
         }
       }
-      // onchange event for address input
-      document.getElementById("address").addEventListener("change", getCoordinates);
+      document.getElementById("address").addEventListener("keypress", function (e) {
+        if (e.key === 'Enter') {
+          getCoordinates();
+        }
+      });
     </script>
   </div>
 </body>

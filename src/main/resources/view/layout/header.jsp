@@ -39,6 +39,7 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item" href="/profile">Trang cá nhân</a></li>
                         <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+                        <li><a class="dropdown-item" href="/parking/create">Thêm bãi đỗ xe</a></li>
                     </ul>
                 </div>
             </div>

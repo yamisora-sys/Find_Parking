@@ -50,12 +50,12 @@ public class Parking {
 
 
     @NotNull
-    private String capacity;
+    private Integer capacity;
 
     @NotNull
     private String image;
 
-    
+
     private String status;
 
     public Parking() {}
