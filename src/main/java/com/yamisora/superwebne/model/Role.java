@@ -40,9 +40,6 @@ public class Role {
     @JoinTable(name = "role_permission", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
     Set<Permission> role_permission;
     
-
-    
-    
     public Role() {}
 
     public Role(String name) {

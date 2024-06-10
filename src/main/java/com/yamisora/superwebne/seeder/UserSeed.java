@@ -7,7 +7,9 @@ import com.yamisora.superwebne.repository.UserRepository;
 import com.yamisora.superwebne.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.core.annotation.Order;
 @Component
+@Order(6)
 public class UserSeed implements CommandLineRunner{
     public UserSeed(){
         super();

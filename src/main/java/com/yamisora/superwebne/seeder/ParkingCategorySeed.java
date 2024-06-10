@@ -5,7 +5,9 @@ import com.yamisora.superwebne.model.ParkingCategory;
 import com.yamisora.superwebne.repository.ParkingCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 @Component
+@Order(2)
 public class ParkingCategorySeed implements CommandLineRunner{
     public ParkingCategorySeed() {
         super();

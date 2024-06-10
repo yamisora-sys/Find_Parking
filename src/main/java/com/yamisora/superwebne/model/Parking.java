@@ -55,7 +55,7 @@ public class Parking {
     @NotNull
     private String image;
 
-    @NotNull
+    
     private String status;
 
     public Parking() {}

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Geocoding Example</title>
     <script>
         async function getCoordinates() {
             const address = document.getElementById("address").value;
@@ -26,10 +25,11 @@
     </script>
 </head>
 <body>
-    <h2>Geocoding Example</h2>
-    <label for="address">Nhập địa chỉ:</label>
+    <div th:fragment="search-coordinate">
+        <label for="address">Nhập địa chỉ:</label>
     <input type="text" id="address" name="address">
     <button onclick="getCoordinates()">Lấy tọa độ</button>
     <p id="result"></p>
+    </div>
 </body>
 </html>

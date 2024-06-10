@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component;
 import com.yamisora.superwebne.repository.NodeRepository;
 import com.yamisora.superwebne.component.PythonRunner;
 import javax.script.ScriptContext;
-
+import org.springframework.core.annotation.Order;
 @Component
+@Order(1)
 public class NodeSeed implements CommandLineRunner {
     public NodeSeed() {
         super();
