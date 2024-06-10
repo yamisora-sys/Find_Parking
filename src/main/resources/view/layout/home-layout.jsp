@@ -10,6 +10,8 @@
   <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
   <link rel="stylesheet" th:href="@{/css/screen/index.css}">
   <link rel="stylesheet" th:href="@{/css/fontawesome.all.min.css}">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
   <style>
     .banner {
       background-image: url('img/baidauxe.webp');

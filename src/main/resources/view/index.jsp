@@ -85,7 +85,7 @@
           <img src="${paring.image}" alt="Bãi đậu xe 1">
           <div class="details">
             <h5 th:text="${parking.name}"></h5>
-            <p th:text="${parking.node}"></p>
+            <p th:text="${parking.node.getId()}"></p>
           </div>
         </div>
         <!-- Mục Bãi đậu xe -->

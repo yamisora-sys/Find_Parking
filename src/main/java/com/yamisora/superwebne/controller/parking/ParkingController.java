@@ -36,4 +36,9 @@ public class ParkingController {
         parkingRepository.save(new_parking);
         return new ModelAndView("redirect:/parking/manager-my-parking");
     }
+
+    @GetMapping("/detail")
+    public ModelAndView detail() {
+        return new ModelAndView("parking/detail");
+    }
 }
