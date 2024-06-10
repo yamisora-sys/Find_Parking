@@ -103,5 +103,8 @@ public class WebController {
     public String detail(){
         return "detail";
     }
-
+    @GetMapping("/add-park")
+    public String addparking(){
+        return "parking/add-parking";
+    }
 }
