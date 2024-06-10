@@ -26,9 +26,6 @@
 </head>
 
 <body>
-  <!-- Header -->
-  <div th:include="layout/header :: header"></div>
-  <!-- Kết thúc Header -->
 
   <!-- Banner -->
   <div layout:fragment="sections">
@@ -131,11 +128,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <div th:include="layout/footer :: footer"></div>
-  <!-- Kết thúc Footer -->
-
   <!-- Bao gồm Bootstrap JS -->
   <script type="text/javascript" th:src="@{/js/popperjs.js}"></script>
 </body>
