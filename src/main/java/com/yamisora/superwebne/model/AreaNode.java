@@ -6,26 +6,25 @@ import lombok.Setter;
 import lombok.Getter;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.GenerationType;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-public class Areas {
+public class AreaNode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull
-    private String name;
+    @ManyToOne(targetEntity = Areas.class)
+    private Areas area;
 
-    private String description;
+    @ManyToOne(targetEntity = Node.class)
+    private Node node;
 
-    public Areas() {
+    public AreaNode() {
+
     }
 }
