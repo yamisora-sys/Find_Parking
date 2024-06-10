@@ -8,7 +8,7 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 <style>
 body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 50%; margin-top:40px; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%;}
 </style>
 </head>
 <body>
@@ -79,12 +79,49 @@ body { margin: 0; padding: 0; }
         userInteracting = true;
     });
 
+    map.on('click', (e) => {
+        console.log(e.lngLat);
+        mapLatitude = e.lngLat.lat;
+        mapLongitude = e.lngLat.lng;
+        map.flyTo({ center: [mapLongitude, mapLatitude], zoom: 13 });
+        // add maker
+        new mapboxgl.Marker({ color: "red" })
+            .setLngLat([mapLongitude, mapLatitude])
+            .addTo(map);
+            // title for maker
+        new mapboxgl.Popup()
+            .setLngLat([mapLongitude, mapLatitude])
+            .setHTML("<h1>Đây là vị trí bạn chọn</h1>")
+            .addTo(map);
+      });
+
     // When animation is complete, start spinning if there is no ongoing interaction
     map.on('moveend', () => {
         spinGlobe();
     });
 
     spinGlobe();
+    parking_data_api = "/parking/get-all"
+    fetch(parking_data_api)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(parking => {
+                new mapboxgl.Marker({ color: "blue" })
+                    .setLngLat([parking.node.longitude, parking.node.latitude])
+                    .addTo(map);
+                    // set popup for marker
+                new mapboxgl.Popup()
+                    .setLngLat([parking.node.longitude, parking.node.latitude])
+                    // h2 id=parking-id-parking.id
+                    .setHTML("<h2 id=parking-id-"+parking.id+">"+parking.name+"</h2>")
+                    .addTo(map);
+                // on click popup
+                document.getElementById("parking-id-"+parking.id).addEventListener("click", function() {
+                    // show parking detail
+                    
+                });
+            });
+        });
 </script>
 
 </body>

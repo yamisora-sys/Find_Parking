@@ -13,13 +13,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.http.ResponseEntity;
 @Controller
 @RequestMapping("/parking")
 public class ParkingController {
 
     @Autowired
     private ParkingRepository parkingRepository;
+
+    @GetMapping("/display-parking-map")
+    public ModelAndView displayParkingMap() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<Parking> parkings = parkingRepository.findAll().stream().toList();
+        modelAndView.setViewName("parking/parking-data-map");
+        modelAndView.addObject("parkings", parkings);
+        return modelAndView;
+    }
 
     @GetMapping("/manager-my-parking")
     public ModelAndView manager() {
@@ -40,5 +49,11 @@ public class ParkingController {
     @GetMapping("/detail")
     public ModelAndView detail() {
         return new ModelAndView("parking/detail");
+    }
+
+    @GetMapping("/get-all")
+    public ResponseEntity<List<Parking>> getAll() {
+        List<Parking> parkings = parkingRepository.findAll().stream().toList();
+        return ResponseEntity.ok(parkings);
     }
 }
