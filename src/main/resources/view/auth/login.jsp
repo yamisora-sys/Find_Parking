@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/toastr.min.css">
     <script src="js/toastr.min.js"></script>
     <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 	<link rel="stylesheet" href="css/auth/login.css">
 </head>
 <body>
@@ -21,6 +22,9 @@
             </div>
             <div class="form-group">
                 <input type="password" name="password" placeholder="Mật khẩu" th:field="*{password}" id="password">
+                <span class="password-toggle" onclick="togglePasswordVisibility()">
+                    <i class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y" style="cursor: pointer; margin-right:10px" id="eyeIcon"></i>
+                </span>
                 <p class="error" id="passwordError">Mật khẩu phải có ít nhất 8 ký tự và chứa ít nhất một chữ cái, một số và một ký tự đặc biệt.</p>
             </div>
             <button type="button" class="login-btn" onclick="validateForm()">Đăng nhập</button>
@@ -31,6 +35,21 @@
     </div>
 
     <script type="text/javascript">
+        function togglePasswordVisibility() {
+            var passwordField = document.getElementById('password');
+            var eyeIcon = document.getElementById('eyeIcon');
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eyeIcon.classList.remove('bi-eye-slash');
+                eyeIcon.classList.add('bi-eye');
+            } else {
+                passwordField.type = "password";
+                eyeIcon.classList.remove('bi-eye');
+                eyeIcon.classList.add('bi-eye-slash');
+            }
+        }
+
         function validateForm() {
             var isValid = true;
             // var username = $('#username').val();
