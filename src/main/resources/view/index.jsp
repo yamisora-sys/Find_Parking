@@ -83,6 +83,7 @@
           <div class="details">
             <h5 th:text="${parking.name}"></h5>
             <p th:text="${parking.description}"></p>
+            <a th:href="@{/park/detail(id=${parking.id})}"><button type="button" class="btn btn-primary">Chi tiết</button></a>
           </div>
         </div>
       </div>

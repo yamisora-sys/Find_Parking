@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tìm Bãi Đậu Xe</title>
-  <link rel="stylesheet" href="css/toastr.min.css">
-  <link rel="stylesheet" href="css/screen/index.css">
-  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" th:href="@{/css/toastr.min.css}">
+  <link rel="stylesheet" th:href="@{/css/screen/index.css}">
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
   <style>
     /* CSS tùy chỉnh */
     .parking-image {
@@ -89,7 +89,7 @@
         <div class="form-group">
           <label for="parking-rate">Giá giữ xe mỗi giờ</label>
           <div class="input-group">
-            <input type="number" class="form-control" id="parking-rate" value="5000">
+            <input type="number" class="form-control" id="parking-rate" th:value=${parking.price}>
             <div class="input-group-append">
               <span class="input-group-text">VNĐ</span>
             </div>
