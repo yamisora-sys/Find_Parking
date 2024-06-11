@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" layout:decorate="~{admin/adminlayout}">
 
 <head>
   <meta charset="UTF-8">
@@ -25,7 +25,7 @@
 
 <body>
   <div class="d-flex">
-    <div th:include="testadmin/adminnav :: adminnav"></div>
+    <div layout:fragment="sections">
     <div class="content w-100">
       <h1>Feedback & Support</h1>
 

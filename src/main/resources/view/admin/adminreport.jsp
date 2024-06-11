@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" layout:decorate="~{admin/adminlayout}">
 
 <head>
   <meta charset="UTF-8">
@@ -13,7 +13,7 @@
 
 <body>
   <div class="d-flex">
-    <div th:include="testadmin/adminnav :: adminnav"></div>
+    <div layout:fragment="sections">
     <div class="content w-100">
       <h1>Báo cáo & Phân tích</h1>
       <button class="btn btn-primary btn-export" onclick="exportToExcel()">Xuất dữ liệu ra Excel</button>

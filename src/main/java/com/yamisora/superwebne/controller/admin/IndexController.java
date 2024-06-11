@@ -13,4 +13,20 @@ public class IndexController {
     public String index() {
         return "admin/index";
     }
+    @GetMapping("adminuser")
+    public String adminuser() {
+        return "admin/user-manager";
+    }
+    @GetMapping("parking-manger")
+    public String parkingmanger() {
+        return "admin/parking-manger";
+    }
+    @GetMapping("adminsupport")
+    public String adminsupport() {
+        return "admin/adminsupport";
+    }
+    @GetMapping("adminreport")
+    public String adminreport() {
+        return "admin/adminreport";
+    }
 }
