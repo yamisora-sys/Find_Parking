@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html layout:decorate="~{layout/home-layout}">
 
 <head>
   <meta charset="UTF-8">
@@ -65,9 +65,7 @@
 </head>
 
 <body>
-  <div th:include="layout/header :: header"></div>
-
-  <div class="container">
+  <div class="container" layout:fragment="sections">
     <img th:src="${parking.image}" alt="Chỗ đậu xe" class="parking-image">
 
     <div class="modal-content">
@@ -156,8 +154,6 @@
       </div>
     </div>
   </div>
-
-  <div th:include="layout/footer :: footer"></div>
 
   <!-- Include Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
