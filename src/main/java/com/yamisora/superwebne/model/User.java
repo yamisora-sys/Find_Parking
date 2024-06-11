@@ -48,7 +48,7 @@ public class User {
 
     // set default value
     @Column(name = "avatar", columnDefinition = "VARCHAR(255) DEFAULT 'https://nupet.vn/wp-content/uploads/2023/10/hinh-nen-ngo-nghinh-anh-meo-cute-nupet-12.jpg'")
-    private String avatar;
+    private String avatar = "https://nupet.vn/wp-content/uploads/2023/10/hinh-nen-ngo-nghinh-anh-meo-cute-nupet-12.jpg";
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
