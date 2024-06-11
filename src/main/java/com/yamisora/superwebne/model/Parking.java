@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.GenerationType;
 import java.util.Set;
 
@@ -44,9 +43,7 @@ public class Parking {
     private User user;
 
     @NotNull
-    @ManyToOne(targetEntity = Node.class)
-    @JoinColumn(name = "node_id")
-    private Node node;
+    private int nodeId;
 
     @ManyToMany(targetEntity = ParkingCategory.class)
     Set<ParkingCategory> categories;

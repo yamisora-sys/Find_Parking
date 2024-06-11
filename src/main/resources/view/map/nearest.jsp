@@ -94,6 +94,7 @@
 
                     directions.setOrigin(userLocation);
                     directions.setDestination(nearestMarker.coordinates);
+
     </script>
 </body>
 </html>

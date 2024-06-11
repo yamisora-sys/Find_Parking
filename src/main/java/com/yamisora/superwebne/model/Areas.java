@@ -24,13 +24,7 @@ public class Areas {
     @NotNull
     private String name;
 
-    @NotNull
     private String description;
-
-    @NotNull
-    @ManyToOne(targetEntity = Node.class)
-    @JoinColumn(name = "node_id")
-    private Node node;
 
     public Areas() {
     }

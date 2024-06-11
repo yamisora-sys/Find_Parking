@@ -1,3 +1,6 @@
 opencage
 mysql-connector-python
 Faker
+pandas
+matplotlib
+osmnx

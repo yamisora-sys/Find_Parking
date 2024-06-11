@@ -14,6 +14,8 @@
                     const latitude = data.results[0].geometry.lat;
                     const longitude = data.results[0].geometry.lng;
                     document.getElementById("result").innerHTML = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                    const link = document.getElementById("routeLink");
+                    link.href = `/route?latitude=${latitude}&longitude=${longitude}`;
                 } else {
                     document.getElementById("result").innerHTML = "Không tìm thấy tọa độ cho địa chỉ này.";
                 }
@@ -27,9 +29,11 @@
 <body>
     <div th:fragment="search-coordinate">
         <label for="address">Nhập địa chỉ:</label>
-    <input type="text" id="address" name="address">
-    <button onclick="getCoordinates()">Lấy tọa độ</button>
-    <p id="result"></p>
+        <input type="text" id="address" name="address">
+        <button onclick="getCoordinates()">Lấy tọa độ</button>
+        <!-- Thêm id "routeLink" vào thẻ a để có thể cập nhật href -->
+        <a id="routeLink" href=""><button type="button" class="btn btn-primary">Lấy</button></a>
+        <p id="result"></p>
     </div>
 </body>
 </html>

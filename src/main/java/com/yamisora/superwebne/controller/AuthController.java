@@ -9,9 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 import com.yamisora.superwebne.repository.UserRepository;
 
@@ -32,7 +33,9 @@ import com.yamisora.superwebne.dto.NotificationDto;
 import com.yamisora.superwebne.dto.UserDto;
 import java.util.HashMap;
 import java.util.Map;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
 
 @Controller
 public class AuthController {
@@ -46,70 +49,41 @@ public class AuthController {
     private SimpMessagingTemplate simpMessagingTemplate;
 
     @GetMapping("/login")
-    public String Login (Model model){ 
+    public String login(Model model){ 
         model.addAttribute("user", new User());
         return "auth/login";
     }
     
     @GetMapping("/register")
-    public String register(@ModelAttribute("user") UserDto user) {
-        user.setRoleId(1);
+    public String register(Model model) {
+        model.addAttribute("user", new UserDto());
         return "auth/register";
     }
 
     @PostMapping("/register")
-    public String createNewUser(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult) {
-        // set user role = 1
+    public String createNewUser(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult, Model model) {
         NotificationDto notificationDto = new NotificationDto();
         Role userRole = roleRepository.findById(1).get();
         if (bindingResult.hasErrors()) {
             notificationDto.setType("error");
             notificationDto.setMessage("Please fill in all the fields");
             simpMessagingTemplate.convertAndSend("/public-notification", notificationDto);
-            // delay 3s
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             return "auth/register";
         } else {
             User newUser = new User(user.getUsername(), user.getEmail(), user.getPassword(), userRole);
             userRepository.save(newUser);
             notificationDto.setType("success");
             notificationDto.setMessage("User has been created");
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             return "redirect:/login";
         }
     }
     
-
     @GetMapping("/logout")
-    public String logout(){
-        return "auth/logout";
+    public String logout(HttpServletRequest request, HttpServletResponse response){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null){    
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+        return "redirect:/login";
     }
-    
-
-
-    // // admin test sau này xoá đi
-    // @GetMapping("/testadmin")
-    // public String testadmin(){
-    //     return "testadmin/testadmin";
-    // }
-    // @GetMapping("/testadminpark")
-    // public String testadminpark(){
-    //     return "testadmin/testadminpark";
-    // }
-    // @GetMapping("/adminreport")
-    // public String adminreport(){
-    //     return "testadmin/adminreport";
-    // }
-    // @GetMapping("/adminsupport")
-    // public String adminsupport(){
-    //     return "testadmin/adminsupport";
-    // }
 }

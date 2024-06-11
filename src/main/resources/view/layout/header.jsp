@@ -17,7 +17,7 @@
     <!-- Phần Header -->
     <header class="header py-3" th:fragment="header">
         <div class="container d-flex flex-wrap justify-content-between align-items-center">
-            <a href="/"><img class="logo-img" src="img/parking_logo_rb.png" alt="Logo"></a>
+            <a href="/"><img class="logo-img" th:src="@{/img/parking_logo_rb.png}" alt="Logo"></a>
             <nav class="navbar navbar-expand-lg">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
