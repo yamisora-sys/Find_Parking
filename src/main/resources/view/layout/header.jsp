@@ -22,7 +22,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/display-direction">Bản đồ</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/parking/display-parking-map}">Bản đồ</a></li>
                         <li class="nav-item"><a class="nav-link" href="/about">Về chúng tôi</a></li>
                         <li class="nav-item"><a class="nav-link" href="/contact">Liên hệ</a></li>
                     </ul>

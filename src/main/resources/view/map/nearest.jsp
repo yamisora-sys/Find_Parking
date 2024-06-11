@@ -17,13 +17,14 @@
     <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js'></script>
     <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoibGFtZG8xMSIsImEiOiJjbHgwN3hoMDcwZzJzMmtxMHhseXpkaTA4In0.k2LXdcNHw5n1OASvF3tSkw';
-        var map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [106.660172, 10.762622], 
-            zoom: 10
-        });
+        mapboxgl.accessToken = 'pk.eyJ1IjoieWFtaXNvcmEiLCJhIjoiY2x4MDhsOXE2MGZlMDJtcHRmaWQxN20waSJ9.NYHCInPpPXOytI3kAe2OYQ';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/yamisora/clx4wr6a5001i01pj0xm472qf',
+        projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
+        zoom: 1,
+        center: [30, 15]
+    });
 
         // Danh sách các điểm đánh dấu
         var markers = [

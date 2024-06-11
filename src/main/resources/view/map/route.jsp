@@ -17,14 +17,14 @@
     <div id="map"></div>
 
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoibGFtZG8xMSIsImEiOiJjbHgwN3hoMDcwZzJzMmtxMHhseXpkaTA4In0.k2LXdcNHw5n1OASvF3tSkw';
-        const map = new mapboxgl.Map({
-            container: 'map',
-            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-            style: 'mapbox://styles/mapbox/streets-v12',
-            center: [106.660172, 10.762622],
-            zoom: 13
-        });
+        mapboxgl.accessToken = 'pk.eyJ1IjoieWFtaXNvcmEiLCJhIjoiY2x4MDhsOXE2MGZlMDJtcHRmaWQxN20waSJ9.NYHCInPpPXOytI3kAe2OYQ';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/yamisora/clx4wr6a5001i01pj0xm472qf',
+        projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
+        zoom: 1,
+        center: [30, 15]
+    });
 
         // Lấy vị trí hiện tại của người dùng
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -56,6 +56,27 @@
                 }),
                 'top-left'
             );
+        });
+        parking_data_api = "/parking/get-all"
+    fetch(parking_data_api)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(parking => {
+                new mapboxgl.Marker({ color: "blue" })
+                    .setLngLat([parking.node.longitude, parking.node.latitude])
+                    .addTo(map);
+                    // set popup for marker
+                new mapboxgl.Popup()
+                    .setLngLat([parking.node.longitude, parking.node.latitude])
+                    // h2 id=parking-id-parking.id
+                    .setHTML("<h2 id=parking-id-"+parking.id+">"+parking.name+"</h2>")
+                    .addTo(map);
+                // on click popup
+                document.getElementById("parking-id-"+parking.id).addEventListener("click", function() {
+                    // show parking detail
+                    
+                });
+            });
         });
     </script>
 

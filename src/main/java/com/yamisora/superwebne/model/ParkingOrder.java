@@ -15,7 +15,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
@@ -25,10 +25,10 @@ public class ParkingOrder {
     private int id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp timeIn;
+    private LocalDateTime timeIn;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp timeOut;
+    private LocalDateTime timeOut;
 
     private Float total;
 

@@ -12,16 +12,17 @@ import lombok.Setter;
 import com.yamisora.superwebne.model.User;
 import java.util.Calendar;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ParkingOrderDto {
     public ParkingOrderDto() {};
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private Timestamp timeIn;
+    private LocalDateTime timeIn;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private Timestamp timeOut;
+    private LocalDateTime timeOut;
 
     private String status;
 

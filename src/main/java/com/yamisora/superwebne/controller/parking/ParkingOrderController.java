@@ -17,6 +17,8 @@ import com.yamisora.superwebne.repository.ParkingOrderRepository;
 import com.yamisora.superwebne.dto.ParkingOrderDto;
 import com.yamisora.superwebne.model.Parking;
 import com.yamisora.superwebne.model.ParkingOrder;
+import com.yamisora.superwebne.model.User;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.yamisora.superwebne.repository.UserRepository;
@@ -26,14 +28,14 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import org.joda.time.DateTime;
+import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDateTime;
 @Controller
 @RequestMapping("/parking-order")
 public class ParkingOrderController {
-
     @Autowired
     private ParkingRepository parkingRepository;
     
-
     @Autowired
     private ParkingOrderRepository parkingOrderRepository;
 
@@ -48,16 +50,19 @@ public class ParkingOrderController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("parking/create-order");
         modelAndView.addObject("parking", parking);
-        modelAndView.addObject("order", parkingOrderDto);
+        modelAndView.addObject("orders", parkingOrderDto);
         modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
         return modelAndView;
     }
 
-    @GetMapping("/list")
+    @GetMapping("/my-list")
     public ModelAndView viewOrderList(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("parking/order-list");
-        modelAndView.addObject("orders", parkingOrderRepository.findAll());
+        modelAndView.addObject("orders", parkingOrderRepository.findByUser(user));
+        modelAndView.addObject("auth", user);
         return modelAndView;
     }
 
@@ -67,14 +72,17 @@ public class ParkingOrderController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         parkingOrder.setParking(order.getParking());
         parkingOrder.setUser(userRepository.findByUsername(authentication.getName()));
-        // convert to datetime in mysql
-        String timeString = order.getTimeIn().toString();
-        // format to timestamp
-
-        Timestamp timestamp = Timestamp.valueOf(timeString);
-        parkingOrder.setTimeIn(timestamp);
+        parkingOrder.setTimeIn(order.getTimeIn());
         parkingOrder.setLicensePlate(order.getLicensePlate());
         parkingOrderRepository.save(parkingOrder);
-        return "redirect:/parking/order/list";
+        return "redirect:/parking-order/my-list";
+    }
+
+    @PostMapping("/payment")
+    public String paymentOrder(@RequestParam("id") Integer id){
+        ParkingOrder parkingOrder = parkingOrderRepository.findById(id).get();
+        parkingOrder.setPaymentStatus("PAID");
+        parkingOrderRepository.save(parkingOrder);
+        return "redirect:/parking-order/my-list";
     }
 }
