@@ -59,28 +59,25 @@
           <a class="nav-link" href="/admin/index"><i class="bi bi-speedometer2"></i> Bảng điều khiển chính</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/testadminpark"><i class="bi bi-map"></i> Quản lý bãi giữ xe</a>
+          <a class="nav-link" href="/admin/parking-manger"><i class="bi bi-map"></i> Quản lý bãi giữ xe</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"><i class="bi bi-bookmark-check"></i> Quản lý đặt chỗ</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><i class="bi bi-people"></i> Quản lý người dùng</a>
+          <a class="nav-link" href="/admin/adminuser"><i class="bi bi-people"></i> Quản lý người dùng</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/admin/role-permission"><i class="bi bi-person-badge"></i> Quản lý vai trò</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#"><i class="bi bi-currency-dollar"></i> Quản lý doanh thu</a>
-        </li>
+        </li> -->
         <li class="nav-item">
-          <a class="nav-link" href="/adminsupport"><i class="bi bi-chat-dots"></i> Phản hồi & Hỗ trợ</a>
+          <a class="nav-link" href="/admin/adminsupport"><i class="bi bi-chat-dots"></i> Phản hồi & Hỗ trợ</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#"><i class="bi bi-gear"></i> Cài đặt hệ thống</a>
-        </li>
+        </li>  -->
         <li class="nav-item">
-          <a class="nav-link" href="/adminreport"><i class="bi bi-bar-chart"></i> Báo cáo & Phân tích</a>
+          <a class="nav-link" href="/admin/adminreport"><i class="bi bi-bar-chart"></i> Báo cáo & Phân tích</a>
         </li>
       </ul>
     </div>
