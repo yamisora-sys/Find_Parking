@@ -78,7 +78,7 @@ public class ParkingController {
 
     @PostMapping("/create")
     public String create(ParkingDto newparking) {
-        Node node = new Node(newparking.getLatitude(), newparking.getLongitude());
+        Node node = new Node(newparking.getLongitude(), newparking.getLatitude());
         node = nodeRepository.save(node);
         Parking parking = new Parking();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -105,7 +105,7 @@ public class ParkingController {
 
     @GetMapping("/get-all")
     public ResponseEntity<List<Parking>> getAll() {
-        List<Parking> parkings = parkingRepository.findAll().stream().toList();
+        List<Parking> parkings = parkingRepository.findVerified().stream().toList();
         return ResponseEntity.ok(parkings);
     }
 }
