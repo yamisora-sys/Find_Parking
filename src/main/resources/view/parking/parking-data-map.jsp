@@ -11,9 +11,12 @@
     <script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js'></script>
-    
-    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
+    <script
+        src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js'></script>
+
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css"
+        type="text/css">
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
     <style>
         body {
@@ -87,9 +90,9 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 var userLocation = [position.coords.longitude, position.coords.latitude];
-                map.flyTo({ center: userLocation, zoom: 5 });
+                map.flyTo({center: userLocation, zoom: 5});
 
-                new mapboxgl.Marker({ color: "red" })
+                new mapboxgl.Marker({color: "red"})
                     .setLngLat(userLocation)
                     .addTo(map);
             });
@@ -113,7 +116,7 @@
                 }
                 const center = map.getCenter();
                 center.lng -= distancePerSecond;
-                map.easeTo({ center, duration: 1000, easing: (n) => n });
+                map.easeTo({center, duration: 1000, easing: (n) => n});
             }
         }
 
@@ -123,16 +126,43 @@
         map.on('dragstart', () => {
             userInteracting = true;
         });
+        map.on('style.load', () => {
+            map.setFog({}); // Set the default atmosphere style
 
+            // Add 3D terrain
+            map.addSource('mapbox-dem', {
+                'type': 'raster-dem',
+                'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+                'tileSize': 512,
+                'maxzoom': 14
+            });
+            map.setTerrain({'source': 'mapbox-dem', 'exaggeration': 1.5});
+
+            // Add 3D buildings
+            map.addLayer({
+                'id': '3d-buildings',
+                'source': 'composite',
+                'source-layer': 'building',
+                'filter': ['==', 'extrude', 'true'],
+                'type': 'fill-extrusion',
+                'minzoom': 15,
+                'paint': {
+                    'fill-extrusion-color': '#aaa',
+                    'fill-extrusion-height': ['get', 'height'],
+                    'fill-extrusion-base': ['get', 'min_height'],
+                    'fill-extrusion-opacity': 0.6
+                }
+            });
+        });
         const parkingDataApi = "/parking/get-all";
         fetch(parkingDataApi)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
 
-                
+
                 data.forEach(parking => {
-                    const marker = new mapboxgl.Marker({ color: "blue" })
+                    const marker = new mapboxgl.Marker({color: "blue"})
                         .setLngLat([parking.node.longitude, parking.node.latitude])
                         .addTo(map);
 
@@ -150,12 +180,12 @@
                 });
             });
 
-            if (navigator.geolocation) {
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 var userLocation = [position.coords.longitude, position.coords.latitude];
-                map.flyTo({ center: userLocation, zoom: 15 });
+                map.flyTo({center: userLocation, zoom: 15});
 
-                new mapboxgl.Marker({ color: "red" })
+                new mapboxgl.Marker({color: "red"})
                     .setLngLat(userLocation)
                     .addTo(map);
 
@@ -163,8 +193,8 @@
                 var minDistance = Infinity;
                 var nearestMarker = null;
 
-                markers.forEach(function(marker) {
-                    var distance = turf.distance(turf.point(userLocation), turf.point(marker.coordinates), { units: 'kilometers' });
+                markers.forEach(function (marker) {
+                    var distance = turf.distance(turf.point(userLocation), turf.point(marker.coordinates), {units: 'kilometers'});
                     if (distance < minDistance) {
                         minDistance = distance;
                         nearestMarker = marker;
@@ -189,15 +219,15 @@
 
         // Thêm chỉ đường đến điểm gần nhất
         var directions = new MapboxDirections({
-                        accessToken: mapboxgl.accessToken,
-                        unit: 'metric',
-                        profile: 'mapbox/driving'
-                    });
+            accessToken: mapboxgl.accessToken,
+            unit: 'metric',
+            profile: 'mapbox/driving'
+        });
 
-                    map.addControl(directions, 'top-left');
+        map.addControl(directions, 'top-left');
 
-                    directions.setOrigin(userLocation);
-                    directions.setDestination(nearestMarker.coordinates);
+        directions.setOrigin(userLocation);
+        directions.setDestination(nearestMarker.coordinates);
     </script>
 </body>
 
