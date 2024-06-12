@@ -1,7 +1,7 @@
 import pandas as pd
 import mysql.connector
 import os
-
+import json
 db_connection = "mysql://localhost:3306/javaweb"
 
 mydb = mysql.connector.connect(
@@ -28,6 +28,7 @@ file_path = os.path.join(os.path.dirname(__file__), file_name)
 #show all node in node table
 # node_data.to_csv(file_path, index=False)
 data_json = pd.read_csv(file_path).to_json(orient='records')
-# convert json to string
-data_str = str(data_json)
-print(data_str)
+print(str(data_json))
+# # convert json to string
+# data_str = json.loads(data_json)
+# print(data_str)

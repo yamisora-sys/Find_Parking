@@ -37,9 +37,11 @@
                         <img th:src="${auth.avatar}" alt="User" class="rounded-circle h-20 shadow-4" style="width: 20px;">
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="/profile">Trang cá nhân</a></li>
-                        <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
-                        <li><a class="dropdown-item" href="/parking/create">Thêm bãi đỗ xe</a></li>
+                        <li><a class="dropdown-item" th:href="@{/profile}">Trang cá nhân</a></li>
+                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
+                        <li><a class="dropdown-item" th:href="@{/parking/create}">Thêm bãi đỗ xe</a></li>
+                        <li><a class="dropdown-item" th:href="@{/parking/order/my-list}">Danh sách đặt chỗ</a></li>
+                        <li><a class="dropdown-item" th:href="@{/admin/index}">Quản trị</a></li>
                     </ul>
                 </div>
             </div>

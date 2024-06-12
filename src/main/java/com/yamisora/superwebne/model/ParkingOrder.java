@@ -24,10 +24,10 @@ public class ParkingOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime timeIn;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime timeOut;
 
     private Float total;
@@ -51,4 +51,11 @@ public class ParkingOrder {
     private User user;
 
     public ParkingOrder() {}
+
+    public Boolean isPayment(){
+        if (paymentStatus.equals("PAID")) {
+            return true;
+        }
+        return false;
+    }
 }

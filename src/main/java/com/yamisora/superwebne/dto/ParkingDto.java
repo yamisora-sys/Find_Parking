@@ -25,7 +25,7 @@ public class ParkingDto {
     private String address;
 
     @NotNull
-    private String price;
+    private Integer price;
 
     @NotNull
     private String description;

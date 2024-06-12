@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.yamisora.superwebne.component.CustomModelAndView;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
 import com.yamisora.superwebne.repository.ParkingRepository;
 import com.yamisora.superwebne.model.Parking;
 import java.util.List;
@@ -16,6 +16,7 @@ public class IndexController {
 
     @Autowired
     private ParkingRepository parkingRepository;
+    
     @GetMapping("index")
     public String index() {
         return "admin/index";
@@ -39,5 +40,23 @@ public class IndexController {
     @GetMapping("adminreport")
     public String adminreport() {
         return "admin/adminreport";
+    }
+
+
+    @GetMapping("verify-parking-detail")
+    public ModelAndView verifyParkingDetail() {
+        List<Parking> parkings = parkingRepository.findNotVerified().stream().toList();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin/verify-parking-detail");
+        modelAndView.addObject("parkings", parkings);
+        return modelAndView;
+    }
+
+    @GetMapping("verify-parking")
+    public String verifyParking(@RequestParam("parkingId") Integer parkingId) {
+        Parking parking = parkingRepository.findById(parkingId).get();
+        parking.setVerified(true);
+        parkingRepository.save(parking);
+        return "redirect:/admin/verify-parking-detail";
     }
 }

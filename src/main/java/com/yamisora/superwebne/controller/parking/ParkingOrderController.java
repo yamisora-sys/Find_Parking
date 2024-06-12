@@ -30,59 +30,103 @@ import java.util.Calendar;
 import org.joda.time.DateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Controller
-@RequestMapping("/parking-order")
+@RequestMapping("/parking/order")
 public class ParkingOrderController {
     @Autowired
     private ParkingRepository parkingRepository;
-    
+
     @Autowired
     private ParkingOrderRepository parkingOrderRepository;
 
     @Autowired
     private UserRepository userRepository;
-    
+
     @GetMapping("/create")
-    public ModelAndView viewCreateOrder(@RequestParam("parkingId") Integer parkingId){
+    public ModelAndView viewCreateOrder(@RequestParam("parkingId") Integer parkingId) {
         Parking parking = parkingRepository.findById(parkingId).get();
         ParkingOrderDto parkingOrderDto = new ParkingOrderDto();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        parkingOrderDto.setParking(parking);
+        Integer usedSlot = parkingOrderRepository.usedSlot(parkingId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("parking/create-order");
         modelAndView.addObject("parking", parking);
-        modelAndView.addObject("orders", parkingOrderDto);
+        modelAndView.addObject("order", parkingOrderDto);
         modelAndView.addObject("auth", userRepository.findByUsername(authentication.getName()));
+        modelAndView.addObject("usedSlot", usedSlot);
         return modelAndView;
     }
 
     @GetMapping("/my-list")
-    public ModelAndView viewOrderList(){
+    public ModelAndView viewOrderList() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByUsername(authentication.getName());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("parking/order-list");
-        modelAndView.addObject("orders", parkingOrderRepository.findByUser(user));
+        List<ParkingOrder> orders = parkingOrderRepository.findByUser(user);
+        // set pricate = timeOut - timeIn * parking.price swithcase
+        for (ParkingOrder order : orders) {
+            // format timeIn timeOut to dd/MM/yyyy HH:mm
+
+            if (order.getTimeOut() == null) {
+                order.setTimeOut(LocalDateTime.now());
+                String unit = order.getParking().getUnitPrice();
+                Integer diff = order.getTimeOut().getHour() - order.getTimeIn().getHour();
+                switch (unit) {
+                    case "1 giờ":
+                        float paymentAmount = (order.getParking().getPrice() * diff);
+                        order.setPaymentAmount(paymentAmount);
+                        break;
+                    default:
+                        paymentAmount = order.getParking().getPrice();
+                        order.setPaymentAmount(paymentAmount);
+                        break;
+                }
+            }
+        }
+        modelAndView.addObject("orders", orders);
         modelAndView.addObject("auth", user);
         return modelAndView;
     }
 
     @PostMapping("/create")
-    public String createOrder(ParkingOrderDto order){
+    public String createOrder(ParkingOrderDto order) {
         ParkingOrder parkingOrder = new ParkingOrder();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        parkingOrder.setParking(order.getParking());
+        Parking parking = order.getParking();
+        System.out.println(order.getParking().getId());
+        parkingOrder.setParking(parking);
         parkingOrder.setUser(userRepository.findByUsername(authentication.getName()));
         parkingOrder.setTimeIn(order.getTimeIn());
         parkingOrder.setLicensePlate(order.getLicensePlate());
+        parkingOrder.setStatus("PENDING");
+        parkingOrder.setPaymentStatus("UNPAID");
         parkingOrderRepository.save(parkingOrder);
-        return "redirect:/parking-order/my-list";
+        return "redirect:/parking/order/my-list";
     }
 
-    @PostMapping("/payment")
-    public String paymentOrder(@RequestParam("id") Integer id){
+    @GetMapping("/payment")
+    public String paymentOrder(@RequestParam("id") Integer id) {
         ParkingOrder parkingOrder = parkingOrderRepository.findById(id).get();
+        parkingOrder.setTimeOut(LocalDateTime.now());
+        Integer diff = parkingOrder.getTimeOut().getHour() - parkingOrder.getTimeIn().getHour();
+        String unit = parkingOrder.getParking().getUnitPrice();
+        switch (unit) {
+            case "1 giờ":
+                float paymentAmount = (parkingOrder.getParking().getPrice() * diff);
+                parkingOrder.setPaymentAmount(paymentAmount);
+                break;
+            default:
+                paymentAmount = parkingOrder.getParking().getPrice();
+                parkingOrder.setPaymentAmount(paymentAmount);
+                break;
+        }
+        
         parkingOrder.setPaymentStatus("PAID");
         parkingOrderRepository.save(parkingOrder);
-        return "redirect:/parking-order/my-list";
+        return "redirect:/parking/order/my-list";
     }
 }

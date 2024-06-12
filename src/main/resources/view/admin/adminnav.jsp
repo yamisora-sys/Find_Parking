@@ -79,6 +79,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/admin/adminreport"><i class="bi bi-bar-chart"></i> Báo cáo & Phân tích</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/verify-parking-detail"><i class="bi bi-gear"></i>Các địa điểm chờ duyệt</a>
+        </li>
       </ul>
     </div>
   </div>

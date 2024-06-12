@@ -25,7 +25,7 @@ node_data_csv = pd.read_csv(file_path)
 
 result = pd.merge(node_data, node_data_csv, on=['latitude', 'longitude'])
 
-parking_schema =['name', 'address', 'price', 'node_id', 'description', 'phone', 'unit_price', 'image', 'owner_id', 'capacity', 'status']
+parking_schema =['name', 'address', 'price', 'node_id', 'description', 'phone', 'unit_price', 'image', 'owner_id', 'capacity', 'status', 'verified']
 
 list_image =[
     "https://baigiuxeoto.com/wp-content/uploads/2022/04/z3317844500090_eac8d957af8bfa3af05e8962fb2ff10c.jpg",
@@ -50,7 +50,8 @@ for index, row in node_data.iterrows():
     owner_id = fake.random_int(min=1, max=3)
     capacity = fake.random_int()
     status = fake.random_element(elements=('active', 'inactive'))
-    list.append([name, address, price, node_id, description, phone, unit_price, image, owner_id, capacity, status])
+    verified = fake.random_element(elements=('true', 'false'))
+    list.append([name, address, price, node_id, description, phone, unit_price, image, owner_id, capacity, status, verified])
 # construct dataframe
 parking_df = pd.DataFrame(list, columns=parking_schema)
 

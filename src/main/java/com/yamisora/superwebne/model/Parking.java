@@ -1,5 +1,6 @@
 package com.yamisora.superwebne.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Setter;
@@ -11,6 +12,12 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GenerationType;
 import java.util.Set;
+
+import org.springframework.data.jpa.repository.Query;
+
+import com.yamisora.superwebne.repository.ParkingOrderRepository;
+import com.yamisora.superwebne.repository.ParkingRepository;
+
 import jakarta.persistence.OneToOne;
 @Entity
 @Getter
@@ -27,7 +34,7 @@ public class Parking {
     private String address;
 
     @NotNull
-    private String price;
+    private Integer price;
 
     @NotNull
     private String description;
@@ -59,6 +66,8 @@ public class Parking {
 
     private String status;
 
-    public Parking() {}
+    @Column(name = "verified", columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean verified = false;
 
+    public Parking() {}
 }
