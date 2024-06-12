@@ -26,7 +26,6 @@
 </head>
 
 <body>
-
   <!-- Banner -->
   <div layout:fragment="sections">
     <div class="banner">
@@ -37,7 +36,7 @@
           <div class="row">
             <div class="col-md-3">
               <div class="form-group">
-                <label for="location">Địa điểm</label>
+                <label for="address">Nhập địa chỉ:</label>
                 <input style="padding-bottom: 14px" type="text" class="form-control" id="location" placeholder="Nhập địa điểm">
               </div>
             </div>
@@ -63,7 +62,6 @@
                 </select>
               </div>
             </div>
-
           </div>
           <div class="row align-self-center" style="margin-top: 10px">
             <div class="col">
@@ -75,8 +73,8 @@
     </div>
 
     <!-- Nội dung chính -->
-    <div class="container">
-      <div class="parking-list">
+    <div class="container" style="margin-bottom: 20px;">
+      <div id="parking-list" class="parking-list">
         <!-- Mục Bãi đậu xe -->
         <div class="parking-item" th:each="parking : ${parkings}">
           <img th:src="${parking.image}" alt="Bãi đậu xe">
@@ -87,6 +85,25 @@
           </div>
         </div>
       </div>
+
+      <!-- Pagination Controls -->
+      <nav style="margin-top: 20px;" aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{/(page=${currentPage-1})}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages-1)}" th:classappend="${i == currentPage} ? 'active'">
+            <a class="page-link" th:href="@{/(page=${i})}" th:text="${i+1}">1</a>
+          </li>
+          <li class="page-item" th:classappend="${currentPage == totalPages-1} ? 'disabled'">
+            <a class="page-link" th:href="@{/(page=${currentPage+1})}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
   <!-- Bao gồm Bootstrap JS -->

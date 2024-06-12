@@ -3,6 +3,7 @@ import mysql.connector
 import os
 import matplotlib.pyplot as plt
 import osmnx as ox
+import requests
 
 db_connection = "mysql://localhost:3306/javaweb"
 
@@ -24,5 +25,9 @@ node_db.execute("""
 node_result = node_db.fetchall()
 node_data = pd.DataFrame(node_result, columns=['id', 'latitude', 'longitude', 'count'])
 
-#show all node in node table
-node_data.to_csv('data/node_area.csv', index=False)
+#convert node_data to JSON and not to save it to a file
+node_data_json = node_data.to_json(orient='records')
+print(node_data_json)
+
+
+
