@@ -1,8 +1,10 @@
 package com.yamisora.superwebne.model;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 import org.hibernate.annotations.ManyToAny;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +14,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
-
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
@@ -21,9 +24,11 @@ public class ParkingOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private Date inTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timeIn;
 
-    private Date outTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timeOut;
 
     private Float total;
 
@@ -34,6 +39,8 @@ public class ParkingOrder {
     private String paymentStatus;
 
     private Float paymentAmount;
+
+    private String licensePlate;
 
     @ManyToOne(targetEntity = Parking.class)
     @JoinColumn(name = "parking_id")

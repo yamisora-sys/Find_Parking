@@ -17,17 +17,24 @@
     <!-- Phần Header -->
     <header class="header py-3" th:fragment="header">
         <div class="container d-flex flex-wrap justify-content-between align-items-center">
-            <a href="/"><img class="logo-img" src="img/parking_logo_rb.png" alt="Logo"></a>
+            <a href="/"><img class="logo-img" th:src="@{/img/parking_logo_rb.png}" alt="Logo"></a>
             <nav class="navbar navbar-expand-lg">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="/">Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/display-direction">Bản đồ</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/parking/display-parking-map}">Bản đồ</a></li>
                         <li class="nav-item"><a class="nav-link" href="/about">Về chúng tôi</a></li>
                         <li class="nav-item"><a class="nav-link" href="/contact">Liên hệ</a></li>
                     </ul>
                 </div>
             </nav>
+            <!-- Search Form -->
+            <div th:fragment="search-coordinate">
+                <form class="d-flex" role="search" style="flex-grow: 1; max-width: 400px; margin-left: 10px; height: 40px" onsubmit="getCoordinates(event)">
+                    <input class="form-control me-2" type="search" id="address" placeholder="Nhập vào địa điểm" aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit" style="height: 40px; width: 100px">Tìm</button>
+                </form>
+            </div> 
             <!-- check if user login -->
             <div sec:authorize="isAuthenticated()">
                 <div class="dropdown">
@@ -49,7 +56,6 @@
                     <a href="/login" class="btn btn-primary me-2">Đăng nhập</a>
                     <a href="/register" class="btn btn-primary">Đăng ký</a>
                 </div>
-                </div>
             </div>
         </div>
     </header>
@@ -58,5 +64,28 @@
     <!-- Thư viện JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script>
+        async function getCoordinates() {
+            const address = document.getElementById("address").value;
+            const apiKey = '37115a7a77524c859abcd229d39a1b5b'; 
+            const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.results.length > 0) {
+                    const latitude = data.results[0].geometry.lat;
+                    const longitude = data.results[0].geometry.lng;
+                    document.getElementById("result").innerHTML = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                    window.location.href = `/route?latitude=${latitude}&longitude=${longitude}`;
+                } else {
+                    document.getElementById("result").innerHTML = "Không tìm thấy tọa độ cho địa chỉ này.";
+                } 
+            } catch (error) {
+                document.getElementById("result").innerHTML = "Có lỗi xảy ra khi lấy tọa độ.";
+                console.error(error);
+            }
+        }
+    </script>
 </body>
 </html>

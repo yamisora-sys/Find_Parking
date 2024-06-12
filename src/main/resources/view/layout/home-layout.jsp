@@ -14,7 +14,7 @@
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
   <style>
     .banner {
-      background-image: url('img/baidauxe.webp');
+      background-image: url('img/Car-Parking.jpg');
       background-size: cover;
       background-position: center;
       padding: 60px 20px;

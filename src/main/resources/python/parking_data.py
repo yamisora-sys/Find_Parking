@@ -45,7 +45,7 @@ for index, row in node_data.iterrows():
     description = fake.text()
     phone = fake.phone_number()
     # per month / per day / one time
-    unit_price = fake.random_element(elements=('per month', 'per day', 'one time'))
+    unit_price = fake.random_element(elements=("1 lần", "1 giờ"))
     image = fake.random_element(elements=list_image)
     owner_id = fake.random_int(min=1, max=3)
     capacity = fake.random_int()

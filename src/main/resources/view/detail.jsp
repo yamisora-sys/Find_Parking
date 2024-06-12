@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <meta charset="UTF-8">
@@ -9,7 +9,7 @@
   <link rel="stylesheet" th:href="@{/css/screen/index.css}">
   <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
   <style>
-    /* CSS tùy chỉnh */
+    /* Custom CSS */
     .parking-image {
       max-width: 80%;
       height: auto;
@@ -56,6 +56,11 @@
     .btn-secondary {
       border: none;
     }
+
+    .error-message {
+      color: red;
+      display: none;
+    }
   </style>
 </head>
 
@@ -75,8 +80,8 @@
           <input type="text" class="form-control" id="parking-status" value="20/25 (Còn chỗ)" disabled>
         </div>
         <div class="form-group">
-          <label for="parking-status">Giới thiệu</label>
-          <input type="text" class="form-control" id="parking-description" th:value=${parking.description} disabled>
+          <label for="parking-description">Giới thiệu</label>
+          <input type="text" class="form-control" id="parking-description" th:value="${parking.description}" disabled>
         </div>
         <div class="form-group">
           <label for="opening-hours">Giờ mở cửa</label>
@@ -85,15 +90,17 @@
         <div class="form-group">
           <label for="license-plate">Biển số xe</label>
           <input type="text" class="form-control" id="license-plate">
+          <span class="error-message" id="license-plate-error">Vui lòng nhập biển số xe.</span>
         </div>
         <div class="form-group">
           <label for="parking-duration">Thời gian đậu xe (giờ)</label>
           <input type="number" class="form-control" id="parking-duration">
+          <span class="error-message" id="parking-duration-error">Vui lòng nhập thời gian đậu xe hợp lệ.</span>
         </div>
         <div class="form-group">
           <label for="parking-rate">Giá giữ xe mỗi giờ</label>
           <div class="input-group">
-            <input type="number" class="form-control" id="parking-rate" th:value=${parking.price}>
+            <input type="number" class="form-control" id="parking-rate" th:value="${parking.price}">
             <div class="input-group-append">
               <span class="input-group-text">VNĐ</span>
             </div>
@@ -102,10 +109,12 @@
         <div class="form-group">
           <label for="payment-method">Hình thức thanh toán</label>
           <select class="form-control" id="payment-method">
-            <option>Tiền mặt</option>
-            <option>Thẻ ngân hàng</option>
-            <option>Ví điện tử</option>
+            <option value="">Chọn hình thức thanh toán</option>
+            <option value="Tiền mặt">Tiền mặt</option>
+            <option value="Thẻ ngân hàng">Thẻ ngân hàng</option>
+            <option value="Ví điện tử">Ví điện tử</option>
           </select>
+          <span class="error-message" id="payment-method-error">Vui lòng chọn hình thức thanh toán.</span>
         </div>
         <div class="form-group">
           <label for="total-amount">Tổng tiền</label>
@@ -119,7 +128,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-        <button type="button" class="btn btn-primary" onclick="calculateTotal(); showPaymentSuccess()">Thanh toán</button>
+        <button type="button" class="btn btn-primary" onclick="validateAndPay()">Thanh toán</button>
       </div>
     </div>
   </div>
@@ -147,17 +156,17 @@
       </div>
     </div>
   </div>
-
   <div th:include="layout/footer :: footer"></div>
 
-  <!-- Bao gồm Bootstrap JS -->
+
+  <!-- Include Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js"></script>
   <script src="js/toastr.min.js"></script>
   <script>
-    // Hàm tính tổng tiền
+    // Function to calculate total amount
     function calculateTotal() {
       var duration = parseInt(document.getElementById("parking-duration").value);
       var rate = parseInt(document.getElementById("parking-rate").value);
@@ -165,7 +174,45 @@
       document.getElementById("total-amount").value = total.toLocaleString();
     }
 
-    // Hàm hiển thị thông tin thanh toán thành công
+    // Function to validate form fields and proceed with payment
+    function validateAndPay() {
+      var licensePlate = document.getElementById("license-plate").value;
+      var duration = document.getElementById("parking-duration").value;
+      var paymentMethod = document.getElementById("payment-method").value;
+      var isValid = true;
+
+      // Reset error messages
+      document.getElementById("license-plate-error").style.display = 'none';
+      document.getElementById("parking-duration-error").style.display = 'none';
+      document.getElementById("payment-method-error").style.display = 'none';
+
+      // Validate license plate
+      if (!licensePlate) {
+        document.getElementById("license-plate-error").style.display = 'block';
+        isValid = false;
+      }
+
+      // Validate parking duration
+      if (!duration || duration <= 0) {
+        document.getElementById("parking-duration-error").style.display = 'block';
+        isValid = false;
+      }
+
+      // Validate payment method
+      if (!paymentMethod) {
+        document.getElementById("payment-method-error").style.display = 'block';
+        isValid = false;
+      }
+
+      if (!isValid) {
+        return;
+      }
+
+      calculateTotal();
+      showPaymentSuccess();
+    }
+
+    // Function to show payment success modal with details
     function showPaymentSuccess() {
       var licensePlate = document.getElementById("license-plate").value;
       var duration = document.getElementById("parking-duration").value;

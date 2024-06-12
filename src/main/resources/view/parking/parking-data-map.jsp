@@ -11,6 +11,9 @@
     <script type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js'></script>
+    
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.3.1/mapbox-gl-directions.css" type="text/css">
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
     <style>
         body {
@@ -125,6 +128,9 @@
         fetch(parkingDataApi)
             .then(response => response.json())
             .then(data => {
+                console.log(data);
+
+                
                 data.forEach(parking => {
                     const marker = new mapboxgl.Marker({ color: "blue" })
                         .setLngLat([parking.node.longitude, parking.node.latitude])
@@ -143,6 +149,55 @@
                     marker.setPopup(popup);
                 });
             });
+
+            if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var userLocation = [position.coords.longitude, position.coords.latitude];
+                map.flyTo({ center: userLocation, zoom: 15 });
+
+                new mapboxgl.Marker({ color: "red" })
+                    .setLngLat(userLocation)
+                    .addTo(map);
+
+                // Tính khoảng cách và tìm điểm gần nhất
+                var minDistance = Infinity;
+                var nearestMarker = null;
+
+                markers.forEach(function(marker) {
+                    var distance = turf.distance(turf.point(userLocation), turf.point(marker.coordinates), { units: 'kilometers' });
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        nearestMarker = marker;
+                    }
+                });
+
+                // Hiển thị điểm gần nhất và thay đổi tên hiển thị
+                if (nearestMarker) {
+                    console.log("Điểm gần nhất: " + nearestMarker.name + " (" + minDistance.toFixed(2) + " km)");
+                    alert("Điểm gần nhất: " + nearestMarker.name + " (" + minDistance.toFixed(2) + " km)");
+
+                    // Thay đổi tên hiển thị của điểm gần nhất
+                    var newName = "Điểm gần nhất: " + nearestMarker.name;
+                    var nearestMarkerElement = markerElements.find(el => el.marker.getLngLat().equals(nearestMarker.coordinates));
+                    if (nearestMarkerElement) {
+                        nearestMarkerElement.popup.setText(newName);
+                        nearestMarkerElement.marker.setPopup(nearestMarkerElement.popup);
+                    }
+                }
+            });
+        }
+
+        // Thêm chỉ đường đến điểm gần nhất
+        var directions = new MapboxDirections({
+                        accessToken: mapboxgl.accessToken,
+                        unit: 'metric',
+                        profile: 'mapbox/driving'
+                    });
+
+                    map.addControl(directions, 'top-left');
+
+                    directions.setOrigin(userLocation);
+                    directions.setDestination(nearestMarker.coordinates);
     </script>
 </body>
 

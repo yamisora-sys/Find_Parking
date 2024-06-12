@@ -40,9 +40,10 @@
             const lat = parseFloat(urlParams.get('latitude'));
             const lng = parseFloat(urlParams.get('longitude'));
             //hiển thị vị trí với marker màu xanh
-            new mapboxgl.Marker({ color: "blue" })
+            new mapboxgl.Marker({ color: "yellow" })
                 .setLngLat([lng, lat])
                 .addTo(map);
+            map.flyTo({ center: [lng, lat], zoom: 15 });
 
             // Hiển thị chỉ đường từ vị trí hiện tại của người dùng tới vị trí được chỉ định
             map.addControl(
@@ -56,6 +57,27 @@
                 }),
                 'top-left'
             );
+        });
+        parking_data_api = "/parking/get-all"
+    fetch(parking_data_api)
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(parking => {
+                new mapboxgl.Marker({ color: "blue" })
+                    .setLngLat([parking.node.longitude, parking.node.latitude])
+                    .addTo(map);
+                    // set popup for marker
+                new mapboxgl.Popup()
+                    .setLngLat([parking.node.longitude, parking.node.latitude])
+                    // h2 id=parking-id-parking.id
+                    .setHTML("<h2 id=parking-id-"+parking.id+">"+parking.name+"</h2>")
+                    .addTo(map);
+                // on click popup
+                document.getElementById("parking-id-"+parking.id).addEventListener("click", function() {
+                    // show parking detail
+                    
+                });
+            });
         });
     </script>
 

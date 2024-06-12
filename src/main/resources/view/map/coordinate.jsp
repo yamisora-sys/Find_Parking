@@ -2,7 +2,7 @@
 <html>
 <head>
     <script>
-        async function getCoordinates() {
+        async function getCoordinatesAndRedirect() {
             const address = document.getElementById("address").value;
             const apiKey = '37115a7a77524c859abcd229d39a1b5b'; 
             const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${apiKey}`;
@@ -14,8 +14,8 @@
                     const latitude = data.results[0].geometry.lat;
                     const longitude = data.results[0].geometry.lng;
                     document.getElementById("result").innerHTML = `Latitude: ${latitude}, Longitude: ${longitude}`;
-                    const link = document.getElementById("routeLink");
-                    link.href = `/route?latitude=${latitude}&longitude=${longitude}`;
+                    // Điều hướng đến trang mới
+                    window.location.href = `/route?latitude=${latitude}&longitude=${longitude}`;
                 } else {
                     document.getElementById("result").innerHTML = "Không tìm thấy tọa độ cho địa chỉ này.";
                 }
@@ -30,9 +30,8 @@
     <div th:fragment="search-coordinate">
         <label for="address">Nhập địa chỉ:</label>
         <input type="text" id="address" name="address">
-        <button onclick="getCoordinates()">Lấy tọa độ</button>
-        <!-- Thêm id "routeLink" vào thẻ a để có thể cập nhật href -->
-        <a id="routeLink" href=""><button type="button" class="btn btn-primary">Lấy</button></a>
+        <!-- Gộp nút tìm kiếm và điều hướng thành một nút duy nhất -->
+        <button onclick="getCoordinatesAndRedirect()">Lấy tọa độ và điều hướng</button>
         <p id="result"></p>
     </div>
 </body>

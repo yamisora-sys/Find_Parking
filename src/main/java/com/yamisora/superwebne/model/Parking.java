@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GenerationType;
 import java.util.Set;
-
+import jakarta.persistence.OneToOne;
 @Entity
 @Getter
 @Setter
@@ -43,7 +43,8 @@ public class Parking {
     private User user;
 
     @NotNull
-    private int nodeId;
+    @OneToOne(targetEntity = Node.class)
+    private Node node;
 
     @ManyToMany(targetEntity = ParkingCategory.class)
     Set<ParkingCategory> categories;

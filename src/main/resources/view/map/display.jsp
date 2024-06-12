@@ -57,15 +57,36 @@ body { margin: 0; padding: 0; }
         });
     });
 
+    // Calculate the distance between two coordinates using the Haversine formula
+    function calculateDistance(coord1, coord2) {
+        const toRad = (value) => (value * Math.PI) / 180;
+        const R = 6371; // Radius of the Earth in kilometers
+        const dLat = toRad(coord2.lat - coord1.lat);
+        const dLng = toRad(coord2.lng - coord1.lng);
+        const a = 
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lat)) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distance in kilometers
+    }
+
+    let userLocation;
+    let parkingMarkers = [];
+
     // Current location 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
-            var userLocation = [position.coords.longitude, position.coords.latitude];
-            map.flyTo({ center: userLocation, zoom: 15 });
+            userLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
+            map.flyTo({ center: [userLocation.lng, userLocation.lat], zoom: 15 });
 
             new mapboxgl.Marker({ color: "red" })
-                .setLngLat(userLocation)
+                .setLngLat([userLocation.lng, userLocation.lat])
                 .addTo(map);
+
+            if (parkingMarkers.length > 0) {
+                highlightClosestMarkers();
+            }
         });
     }
 
@@ -127,27 +148,57 @@ body { margin: 0; padding: 0; }
     });
 
     spinGlobe();
-    parking_data_api = "/parking/get-all"
-    fetch(parking_data_api)
+
+    fetch("/parking/get-all")
         .then(response => response.json())
         .then(data => {
             data.forEach(parking => {
-                new mapboxgl.Marker({ color: "blue" })
+                const marker = new mapboxgl.Marker({ color: "blue" })
                     .setLngLat([parking.node.longitude, parking.node.latitude])
                     .addTo(map);
-                    // set popup for marker
+                
                 new mapboxgl.Popup()
                     .setLngLat([parking.node.longitude, parking.node.latitude])
-                    // h2 id=parking-id-parking.id
-                    .setHTML("<h2 id=parking-id-"+parking.id+">"+parking.name+"</h2>")
+                    .setHTML("<h2 id='parking-id-"+parking.id+"'>"+parking.name+"</h2>")
                     .addTo(map);
-                // on click popup
-                document.getElementById("parking-id-"+parking.id).addEventListener("click", function() {
-                    // show parking detail
-                    
+
+                parkingMarkers.push({
+                    id: parking.id,
+                    name: parking.name,
+                    coordinates: { lat: parking.node.latitude, lng: parking.node.longitude },
+                    marker: marker
                 });
             });
+
+            if (userLocation) {
+                highlightClosestMarkers();
+            }
         });
+
+    function highlightClosestMarkers() {
+        const distances = parkingMarkers.map(parking => {
+            return {
+                ...parking,
+                distance: calculateDistance(userLocation, parking.coordinates)
+            };
+        });
+
+        distances.sort((a, b) => a.distance - b.distance);
+
+        const closestMarkers = distances.slice(0, 3);
+
+        let alertMessage = "Ba vị trí đậu xe gần đây nhất:\n";
+        closestMarkers.forEach(parking => {
+            parking.marker.getElement().style.backgroundColor = "green"; // Change color to green for closest markers
+            new mapboxgl.Popup()
+                .setLngLat([parking.coordinates.lng, parking.coordinates.lat])
+                .setHTML("<h2 id='parking-id-"+parking.id+"'>"+parking.name+"<br>Distance: "+parking.distance.toFixed(2)+" km</h2>")
+                .addTo(map);
+            alertMessage += `${parking.name}: ${parking.distance.toFixed(2)} km\n`;
+        });
+
+        alert(alertMessage);
+    }
 </script>
 </body>
 </html>

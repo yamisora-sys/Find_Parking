@@ -92,6 +92,8 @@ public class ParkingController {
         parking.setPhone(newparking.getPhone());
         parking.setImage(newparking.getImage());
         parking.setName(newparking.getName());
+        parking.setStatus(newparking.getStatus());
+        parking.setUnitPrice(newparking.getUnitPrice());
         parkingRepository.save(parking);
         return "redirect:/parking/manager-my-parking";
     }
