@@ -11,12 +11,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import com.yamisora.superwebne.model.Parking;
 import com.yamisora.superwebne.repository.ParkingRepository;
 import com.yamisora.superwebne.repository.UserRepository;
 import com.yamisora.superwebne.dto.NotificationDto;
 import com.yamisora.superwebne.component.CustomModelAndView;
+import org.springframework.security.core.Authentication;
+import com.yamisora.superwebne.model.Parking;
+import com.yamisora.superwebne.repository.ParkingRepository;
 import java.util.List;
 
 @Controller

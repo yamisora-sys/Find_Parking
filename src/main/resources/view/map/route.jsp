@@ -17,14 +17,14 @@
     <div id="map"></div>
 
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoieWFtaXNvcmEiLCJhIjoiY2x4MDhsOXE2MGZlMDJtcHRmaWQxN20waSJ9.NYHCInPpPXOytI3kAe2OYQ';
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/yamisora/clx4wr6a5001i01pj0xm472qf',
-        projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
-        zoom: 1,
-        center: [30, 15]
-    });
+        mapboxgl.accessToken = 'pk.eyJ1IjoibGFtZG8xMSIsImEiOiJjbHgwN3hoMDcwZzJzMmtxMHhseXpkaTA4In0.k2LXdcNHw5n1OASvF3tSkw';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: [106.660172, 10.762622],
+            zoom: 13
+        });
 
         // Lấy vị trí hiện tại của người dùng
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -40,9 +40,10 @@
             const lat = parseFloat(urlParams.get('latitude'));
             const lng = parseFloat(urlParams.get('longitude'));
             //hiển thị vị trí với marker màu xanh
-            new mapboxgl.Marker({ color: "blue" })
+            new mapboxgl.Marker({ color: "yellow" })
                 .setLngLat([lng, lat])
                 .addTo(map);
+            map.flyTo({ center: [lng, lat], zoom: 15 });
 
             // Hiển thị chỉ đường từ vị trí hiện tại của người dùng tới vị trí được chỉ định
             map.addControl(

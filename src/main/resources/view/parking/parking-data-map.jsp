@@ -87,7 +87,7 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
                 var userLocation = [position.coords.longitude, position.coords.latitude];
-                map.flyTo({ center: userLocation, zoom: 15 });
+                map.flyTo({ center: userLocation, zoom: 5 });
 
                 new mapboxgl.Marker({ color: "red" })
                     .setLngLat(userLocation)

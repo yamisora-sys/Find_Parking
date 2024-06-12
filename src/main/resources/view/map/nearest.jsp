@@ -56,31 +56,48 @@
                     .setLngLat(userLocation)
                     .addTo(map);
 
-                // Tính khoảng cách và tìm điểm gần nhất
-                var minDistance = Infinity;
-                var nearestMarker = null;
-
-                markers.forEach(function(marker) {
-                    var distance = turf.distance(turf.point(userLocation), turf.point(marker.coordinates), { units: 'kilometers' });
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        nearestMarker = marker;
-                    }
+                // Tính khoảng cách và tìm 3 điểm gần nhất
+                var distances = markers.map(function(marker) {
+                    return {
+                        marker: marker,
+                        distance: turf.distance(turf.point(userLocation), turf.point(marker.coordinates), { units: 'kilometers' })
+                    };
                 });
 
-                // Hiển thị điểm gần nhất và thay đổi tên hiển thị
-                if (nearestMarker) {
-                    console.log("Điểm gần nhất: " + nearestMarker.name + " (" + minDistance.toFixed(2) + " km)");
-                    alert("Điểm gần nhất: " + nearestMarker.name + " (" + minDistance.toFixed(2) + " km)");
+                // Sắp xếp các điểm dựa trên khoảng cách từ vị trí người dùng
+                distances.sort(function(a, b) {
+                    return a.distance - b.distance;
+                });
 
-                    // Thay đổi tên hiển thị của điểm gần nhất
-                    var newName = "Điểm gần nhất: " + nearestMarker.name;
-                    var nearestMarkerElement = markerElements.find(el => el.marker.getLngLat().equals(nearestMarker.coordinates));
+                // Lấy 3 điểm gần nhất
+                var nearestMarkers = distances.slice(0, 3);
+
+                // Chuỗi thông báo cho 3 điểm gần nhất
+                var alertMessage = "";
+                nearestMarkers.forEach(function(item, index) {
+                    var marker = item.marker;
+                    var distance = item.distance;
+
+                    var message = "Điểm gần nhất thứ " + (index + 1) + ": " + marker.name + " (" + distance.toFixed(2) + " km)";
+                    console.log(message);
+                    alertMessage += message + "\n";
+
+                    // Thay đổi tên hiển thị của các điểm gần nhất
+                    var newName = "Điểm gần nhất thứ " + (index + 1) + ": " + marker.name;
+                    var nearestMarkerElement = markerElements.find(el => {
+                        var elCoordinates = el.marker.getLngLat();
+                        return elCoordinates.lng === marker.coordinates[0] && elCoordinates.lat === marker.coordinates[1];
+                    });
                     if (nearestMarkerElement) {
                         nearestMarkerElement.popup.setText(newName);
                         nearestMarkerElement.marker.setPopup(nearestMarkerElement.popup);
                     }
-                }
+                });
+
+                // Hiển thị thông báo cho 3 điểm gần nhất
+                alert(alertMessage);
+
+                
             });
         }
 

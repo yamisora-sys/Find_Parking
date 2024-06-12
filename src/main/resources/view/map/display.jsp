@@ -8,38 +8,85 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js"></script>
 <style>
 body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%;}
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
 </style>
 </head>
 <body>
-<div id="map">
-</div>
+<div id="map"></div>
 <script>
-	mapboxgl.accessToken = 'pk.eyJ1IjoieWFtaXNvcmEiLCJhIjoiY2x4MDhsOXE2MGZlMDJtcHRmaWQxN20waSJ9.NYHCInPpPXOytI3kAe2OYQ';
+    mapboxgl.accessToken = 'pk.eyJ1IjoieWFtaXNvcmEiLCJhIjoiY2x4MDhsOXE2MGZlMDJtcHRmaWQxN20waSJ9.NYHCInPpPXOytI3kAe2OYQ';
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/yamisora/clx4wr6a5001i01pj0xm472qf',
         projection: 'globe', // Display the map as a globe, since satellite-v9 defaults to Mercator
         zoom: 1,
-        center: [30, 15]
+        center: [30, 15],
+        pitch: 45, // Initial pitch in degrees
+        bearing: 0 // Initial bearing in degrees
     });
 
-    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new mapboxgl.NavigationControl({ showCompass: true }));
     map.scrollZoom.disable();
 
     map.on('style.load', () => {
         map.setFog({}); // Set the default atmosphere style
+
+        // Add 3D terrain
+        map.addSource('mapbox-dem', {
+            'type': 'raster-dem',
+            'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+            'tileSize': 512,
+            'maxzoom': 14
+        });
+        map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+        // Add 3D buildings
+        map.addLayer({
+            'id': '3d-buildings',
+            'source': 'composite',
+            'source-layer': 'building',
+            'filter': ['==', 'extrude', 'true'],
+            'type': 'fill-extrusion',
+            'minzoom': 15,
+            'paint': {
+                'fill-extrusion-color': '#aaa',
+                'fill-extrusion-height': ['get', 'height'],
+                'fill-extrusion-base': ['get', 'min_height'],
+                'fill-extrusion-opacity': 0.6
+            }
+        });
     });
+
+    // Calculate the distance between two coordinates using the Haversine formula
+    function calculateDistance(coord1, coord2) {
+        const toRad = (value) => (value * Math.PI) / 180;
+        const R = 6371; // Radius of the Earth in kilometers
+        const dLat = toRad(coord2.lat - coord1.lat);
+        const dLng = toRad(coord2.lng - coord1.lng);
+        const a = 
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRad(coord1.lat)) * Math.cos(toRad(coord2.lat)) *
+            Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distance in kilometers
+    }
+
+    let userLocation;
+    let parkingMarkers = [];
 
     // Current location 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
-            var userLocation = [position.coords.longitude, position.coords.latitude];
-            map.flyTo({ center: userLocation, zoom: 15 });
+            userLocation = { lat: position.coords.latitude, lng: position.coords.longitude };
+            map.flyTo({ center: [userLocation.lng, userLocation.lat], zoom: 15 });
 
             new mapboxgl.Marker({ color: "red" })
-                .setLngLat(userLocation)
+                .setLngLat([userLocation.lng, userLocation.lat])
                 .addTo(map);
+
+            if (parkingMarkers.length > 0) {
+                highlightClosestMarkers();
+            }
         });
     }
 
@@ -83,7 +130,7 @@ body { margin: 0; padding: 0; }
         console.log(e.lngLat);
         mapLatitude = e.lngLat.lat;
         mapLongitude = e.lngLat.lng;
-        map.flyTo({ center: [mapLongitude, mapLatitude], zoom: 13 });
+        map.flyTo({ center: [mapLongitude, mapLatitude], zoom: 13, pitch: 60, bearing: -60 });
         // add maker
         new mapboxgl.Marker({ color: "red" })
             .setLngLat([mapLongitude, mapLatitude])
@@ -93,7 +140,7 @@ body { margin: 0; padding: 0; }
             .setLngLat([mapLongitude, mapLatitude])
             .setHTML("<h1>Đây là vị trí bạn chọn</h1>")
             .addTo(map);
-      });
+    });
 
     // When animation is complete, start spinning if there is no ongoing interaction
     map.on('moveend', () => {
@@ -101,28 +148,57 @@ body { margin: 0; padding: 0; }
     });
 
     spinGlobe();
-    parking_data_api = "/parking/get-all"
-    fetch(parking_data_api)
+
+    fetch("/parking/get-all")
         .then(response => response.json())
         .then(data => {
             data.forEach(parking => {
-                new mapboxgl.Marker({ color: "blue" })
+                const marker = new mapboxgl.Marker({ color: "blue" })
                     .setLngLat([parking.node.longitude, parking.node.latitude])
                     .addTo(map);
-                    // set popup for marker
+                
                 new mapboxgl.Popup()
                     .setLngLat([parking.node.longitude, parking.node.latitude])
-                    // h2 id=parking-id-parking.id
-                    .setHTML("<h2 id=parking-id-"+parking.id+">"+parking.name+"</h2>")
+                    .setHTML("<h2 id='parking-id-"+parking.id+"'>"+parking.name+"</h2>")
                     .addTo(map);
-                // on click popup
-                document.getElementById("parking-id-"+parking.id).addEventListener("click", function() {
-                    // show parking detail
-                    
+
+                parkingMarkers.push({
+                    id: parking.id,
+                    name: parking.name,
+                    coordinates: { lat: parking.node.latitude, lng: parking.node.longitude },
+                    marker: marker
                 });
             });
-        });
-</script>
 
+            if (userLocation) {
+                highlightClosestMarkers();
+            }
+        });
+
+    function highlightClosestMarkers() {
+        const distances = parkingMarkers.map(parking => {
+            return {
+                ...parking,
+                distance: calculateDistance(userLocation, parking.coordinates)
+            };
+        });
+
+        distances.sort((a, b) => a.distance - b.distance);
+
+        const closestMarkers = distances.slice(0, 3);
+
+        let alertMessage = "Ba vị trí đậu xe gần đây nhất:\n";
+        closestMarkers.forEach(parking => {
+            parking.marker.getElement().style.backgroundColor = "green"; // Change color to green for closest markers
+            new mapboxgl.Popup()
+                .setLngLat([parking.coordinates.lng, parking.coordinates.lat])
+                .setHTML("<h2 id='parking-id-"+parking.id+"'>"+parking.name+"<br>Distance: "+parking.distance.toFixed(2)+" km</h2>")
+                .addTo(map);
+            alertMessage += `${parking.name}: ${parking.distance.toFixed(2)} km\n`;
+        });
+
+        alert(alertMessage);
+    }
+</script>
 </body>
 </html>

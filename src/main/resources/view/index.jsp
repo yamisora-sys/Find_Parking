@@ -29,9 +29,10 @@
   <!-- Banner -->
   <div layout:fragment="sections">
     <div class="banner">
-      <h1>Tìm Bãi Đậu Xe</h1>
+    <h1>Tìm Bãi Đậu Xe Trong Khu Vực Của Bạn Với <a th:href="@{/display-map}"><span style="color: #3700ff;">FindParking</span></a></h1>
+
       <!-- Phần Tìm kiếm trong Banner -->
-      <div class="search-section">
+      <!-- <div class="search-section">
         <form>
           <div class="row">
             <div class="col-md-3">
@@ -69,8 +70,8 @@
             </div>
           </div>
         </form>
+      </div> -->
       </div>
-    </div>
 
     <!-- Nội dung chính -->
     <div class="container" style="margin-bottom: 20px;">
