@@ -17,8 +17,9 @@ public class ParkingCategorySeed implements CommandLineRunner{
     private ParkingCategoryRepository parkingCategoryRepository;
 
     String [][]data = {
-        {"Car", "Parking for Car"},
-        {"Bike", "Parking for Bike"},
+        {"Xe máy", "Xe máy"},
+        {"Xe hơi", "Xe hơi"},
+        {"Xe đạp", "Xe đạp"}
     };
 
     public void ParkingCategoryData() throws Exception{

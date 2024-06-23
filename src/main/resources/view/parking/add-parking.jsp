@@ -30,6 +30,15 @@
       border-radius: 10px;
       margin: auto auto;
     }
+
+    #map2{
+      z-index: 10;
+      color: #000000;
+      height: 100%;
+      width: 100%;
+      border-radius: 10px;
+      margin: auto auto;
+    }
   </style>
 </head>
 
@@ -51,10 +60,37 @@
             <label for="address" class="form-label">Địa Chỉ</label>
             <input type="text" class="form-control" id="address" name="address" required th:field="*{address}">
             <button type="button" class="btn btn-primary mt-2" onclick="getCoordinates()">Lấy Tọa Độ</button>
+            <!-- button display popup -->
+            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Popup</button>
+            <!-- popup -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div id="map2" class="overflow-visible"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="onSaveArea()">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- longitude -->
             <input type="string" id="longitude" name="longitude" th:field="*{longitude}" required hidden>
             <!-- latitude -->
             <input type="string" id="latitude" name="latitude" th:field="*{latitude}" required hidden>
+
+            <!-- input type = array -->
+            <input type="string" id="coordinates" name="coordinates" th:field="*{coordinates}" required hidden>
+            <!-- <div id="coordinates">
+
+            </div> -->
           </div>
         </div>
         <div class="row mb-3">
@@ -121,6 +157,74 @@
         zoom: 13
       });
 
+      const map2 = new mapboxgl.Map({
+        container: 'map2',
+        style: 'mapbox://styles/yamisora/clx4wr6a5001i01pj0xm472qf',
+        center: [mapLongitude, mapLatitude],
+        zoom: 13
+      });
+      var parking_coordinates = [];
+      map2.on('click', function (e) {
+        parking_coordinates.push(e.lngLat);
+        new mapboxgl.Marker({color: "red"})
+          .setLngLat(e.lngLat)
+          .addTo(map2);
+        // add to input
+        // convert array json to string
+      });
+
+      // save parking area to input
+      function onSaveArea() {
+        let coordinates = JSON.stringify(parking_coordinates);
+        document.getElementById("coordinates").value = coordinates;
+        console.log(coordinates);
+        // create layer
+        map2.addLayer({
+          id: 'parking-area',
+          type: 'fill',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              geometry: {
+                type: 'Polygon',
+                coordinates: [
+                  parking_coordinates.map(coordinate => [coordinate.lng, coordinate.lat])
+                ]
+              }
+            }
+          },
+          layout: {},
+          paint: {
+            'fill-color': '#088',
+            'fill-opacity': 0.8
+          }
+        });
+
+        map.addLayer({
+          id: 'parking-area',
+          type: 'fill',
+          source: {
+            type: 'geojson',
+            data: {
+              type: 'Feature',
+              geometry: {
+                type: 'Polygon',
+                coordinates: [
+                  parking_coordinates.map(coordinate => [coordinate.lng, coordinate.lat])
+                ]
+              }
+            }
+          },
+          layout: {},
+          paint: {
+            'fill-color': '#088',
+            'fill-opacity': 0.8
+          }
+        });
+        console.log("Save Area");
+      }
+
       // Current location 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -182,6 +286,9 @@
 
       spinGlobe();
 
+
+      
+
       async function getCoordinates() {
         const address = document.getElementById("address").value;
         const apiKey = '37115a7a77524c859abcd229d39a1b5b';
@@ -195,11 +302,13 @@
             const longitude = data.results[0].geometry.lng;
             console.log(mapLatitude, mapLongitude);
             map.flyTo({center: [longitude, latitude], zoom: 15});
+            map2.flyTo({center: [longitude, latitude], zoom: 15});
             // clear all markers
             document.querySelectorAll('.mapboxgl-marker').forEach(marker => marker.remove());
             new mapboxgl.Marker({color: "red"})
               .setLngLat([longitude, latitude])
-              .addTo(map);
+              .addTo(map)
+              .addTo(map2);
             // set input value
             document.getElementById("latitude").value = latitude;
             document.getElementById("longitude").value = longitude;

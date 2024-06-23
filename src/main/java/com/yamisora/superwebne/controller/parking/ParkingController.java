@@ -1,4 +1,6 @@
 package com.yamisora.superwebne.controller.parking;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.yamisora.superwebne.component.CustomModelAndView;
 import com.yamisora.superwebne.dto.ParkingDto;
@@ -12,6 +14,7 @@ import com.yamisora.superwebne.repository.NodeRepository;
 import com.yamisora.superwebne.repository.ParkingCategoryRepository;
 import com.yamisora.superwebne.repository.ParkingRepository;
 import com.yamisora.superwebne.repository.ParkingRepository;
+import com.yamisora.superwebne.model.Areas;
 import com.yamisora.superwebne.model.Node;
 import com.yamisora.superwebne.model.Parking;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ import org.springframework.security.authorization.method.AuthorizeReturnObject;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.yamisora.superwebne.repository.UserRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import com.yamisora.superwebne.repository.AreasRepository;
 @Controller
 @RequestMapping("/parking")
 public class ParkingController {
@@ -41,6 +47,9 @@ public class ParkingController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private AreasRepository areasRepository;
 
     @GetMapping("/display-parking-map")
     public ModelAndView displayParkingMap() {
@@ -81,6 +90,25 @@ public class ParkingController {
         Node node = new Node(newparking.getLongitude(), newparking.getLatitude());
         node = nodeRepository.save(node);
         Parking parking = new Parking();
+        String coordinatesStr = newparking.getCoordinates();
+        // convert str to json
+        System.out.println("88" + coordinatesStr);
+        JSONArray coordinates = new JSONArray(coordinatesStr);
+        Areas area = new Areas();
+        List<Node> nodes = new ArrayList<>();
+        for (int i = 0; i < coordinates.length(); i++) {
+            JSONObject coordinate = coordinates.getJSONObject(i);
+            System.out.println(coordinate);
+            float longitude = Float.parseFloat(coordinate.getString("lng"));
+            float latitude = Float.parseFloat(coordinate.getString("lat"));
+            Node node1 = new Node(longitude, latitude);
+            node1 = nodeRepository.save(node1);
+            nodes.add(node1);
+        }
+        area.setNodes(new HashSet<>(nodes));
+        areasRepository.save(area);
+
+        System.out.println(coordinatesStr);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         parking.setNode(node);
         parking.setCategories(newparking.getCategories());
@@ -94,6 +122,7 @@ public class ParkingController {
         parking.setName(newparking.getName());
         parking.setStatus(newparking.getStatus());
         parking.setUnitPrice(newparking.getUnitPrice());
+        parking.setArea(area);
         parkingRepository.save(parking);
         return "redirect:/parking/manager-my-parking";
     }

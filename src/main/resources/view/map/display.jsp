@@ -193,6 +193,8 @@
                         coordinates: {latitude: parking.node.latitude, longitude: parking.node.longitude},
                         marker: marker
                     });
+
+                    
                 });
 
                 if (userLocation) {

@@ -159,8 +159,6 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-
-
                 data.forEach(parking => {
                     const marker = new mapboxgl.Marker({color: "blue"})
                         .setLngLat([parking.node.longitude, parking.node.latitude])
@@ -175,8 +173,30 @@
                             </button>
                         `)
                         .addTo(map);
-
-                    marker.setPopup(popup);
+                    const area = parking.area;
+                    if(area){
+                        const area_coordinates = area.nodes.map(node => [node.longitude, node.latitude]);
+                        area_coordinates.push(area_coordinates[0]);
+                        map.addLayer({
+                            'id': 'area-' + parking.id,
+                            'type': 'fill',
+                            'source': {
+                                'type': 'geojson',
+                                'data': {
+                                    'type': 'Feature',
+                                    'geometry': {
+                                        'type': 'Polygon',
+                                        'coordinates': [area_coordinates]
+                                    }
+                                }
+                            },
+                            'layout': {},
+                            'paint': {
+                                'fill-color': '#088',
+                                'fill-opacity': 0.5
+                            }
+                        });
+                    }
                 });
             });
 
@@ -228,6 +248,14 @@
 
         directions.setOrigin(userLocation);
         directions.setDestination(nearestMarker.coordinates);
+
+        // click and hold to spin the globe
+        let mouseDown = false;
+        let mouseDownTime = 0;
+        map.getCanvas().addEventListener('mousedown', () => {
+            mouseDown = true;
+            mouseDownTime = Date.now();
+        });
     </script>
 </body>
 

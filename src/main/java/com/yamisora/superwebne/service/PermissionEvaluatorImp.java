@@ -6,32 +6,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.io.Serializable;
 
 import com.yamisora.superwebne.repository.PermissionRepository;
-
+import com.yamisora.superwebne.interfaces.PermissionEvaluator;
+import com.yamisora.superwebne.model.User;
+import java.util.*;
 public class PermissionEvaluatorImp implements PermissionRepository {
-    @Override
-    public boolean hasPermission(Authentication auth, Object targetDomainObject, Object permission) {
-        if ((auth == null) || (targetDomainObject == null) || !(permission instanceof String)) {
-            return false;
-        }
-        String targetType = targetDomainObject.getClass().getSimpleName().toUpperCase();
-        return hasPermission(auth, targetType, targetDomainObject, permission);
+
+    public static final PermisisonEvalutor denyAll = new DenyAllPermissionEvaluator();
+    private final Map<String, PermissionEvaluator> permissionEvaluators;
+
+    public PermissionEvaluatorImp(Map<String, PermissionEvaluator> permissionEvaluators) {
+        this.permissionEvaluators = permissionEvaluators;
     }
 
-    @Override
-    public boolean hasPermission(Authentication auth, Serializable targetId, String targetType, Object permission) {
-        if ((auth == null) || (targetType == null) || !(permission instanceof String)) {
-            return false;
-        }
-        return hasPrivilege(auth, targetType.toUpperCase(), permission.toString().toUpperCase());
-    }
-
-    private boolean hasPrivilege(Authentication auth, String targetType, String permission) {
-        for (GrantedAuthority grantedAuth : auth.getAuthorities()) {
-            if (grantedAuth.getAuthority().startsWith(targetType) &&
-                    grantedAuth.getAuthority().contains(permission)) {
-                return true;
-            }
-        }
-        return false;
-    }
+    
 }

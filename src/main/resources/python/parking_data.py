@@ -34,9 +34,8 @@ list_image =[
 ]
 
 list =[]
-
 for index, row in node_data.iterrows():
-    name = fake.company()
+    name = fake.random_element(elements=("bãi giữ xe máy", "bãi giữ xe đạp", "bãi giữ oto"))
     # col address in node_data_csv['address'] = longitute + latitude
     address = node_data_csv['address'][index]
     # price from 5000 to 3000000

@@ -14,6 +14,8 @@ import com.yamisora.superwebne.model.ParkingCategory;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Set;
+import java.util.ArrayList;
+import org.hibernate.mapping.Array;
 
 @Getter
 @Setter
@@ -53,6 +55,8 @@ public class ParkingDto {
     private float longitude;
 
     private float latitude;
+
+    private String coordinates;
 
     public ParkingDto() {}
 }

@@ -56,6 +56,8 @@ public class Parking {
     @ManyToMany(targetEntity = ParkingCategory.class)
     Set<ParkingCategory> categories;
 
+    @OneToOne(targetEntity = Areas.class)
+    private Areas area;
 
     @NotNull
     private Integer capacity;
