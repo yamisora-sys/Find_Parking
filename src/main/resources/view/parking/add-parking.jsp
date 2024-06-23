@@ -61,13 +61,17 @@
             <input type="text" class="form-control" id="address" name="address" required th:field="*{address}">
             <button type="button" class="btn btn-primary mt-2" onclick="getCoordinates()">Lấy Tọa Độ</button>
             <!-- button display popup -->
-            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Popup</button>
+            <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              Vẽ Bãi Đỗ Xe Trên Bản Đồ
+            </button>
             <!-- popup -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Vẽ Bãi Đỗ Xe
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
@@ -172,6 +176,40 @@
         // add to input
         // convert array json to string
       });
+
+      function clearArea() {
+        parking_coordinates = [];
+        document.getElementById("coordinates").value = "";
+        map2.getSource('parking-area').setData({
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: []
+          }
+        });
+        map.getSource('parking-area').setData({
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: []
+          }
+        });
+        // remove all markers on map2
+        document.querySelectorAll('.mapboxgl-marker').forEach(marker => marker.remove());
+      }
+
+      // add button to map2
+      const clearButton = document.createElement('button');
+      clearButton.textContent = 'Xoá Bãi Đỗ Xe';  
+      clearButton.style.position = 'absolute';
+      clearButton.style.top = '10px';
+      clearButton.style.left = '10px';
+      clearButton.style.zIndex = '10';
+      clearButton.addEventListener('click', clearArea);
+      map2.getCanvas().parentNode.appendChild(clearButton);
+
+
+
 
       // save parking area to input
       function onSaveArea() {
@@ -286,8 +324,22 @@
 
       spinGlobe();
 
-
-      
+      // cho phep nguoi dung danh dau bai gui xe tren ban do
+      map.on('click', (e) => {
+        console.log(e.lngLat);
+        mapLatitude = e.lngLat.lat;
+        mapLongitude = e.lngLat.lng;
+        document.getElementById("latitude").value = mapLatitude;
+        document.getElementById("longitude").value = mapLongitude;
+        // clear all markers
+        document.querySelectorAll('.mapboxgl-marker').forEach(marker => marker.remove());
+        new mapboxgl.Marker({color: "red"})
+          .setLngLat([mapLongitude, mapLatitude])
+          .addTo(map);
+        new mapboxgl.Marker({color: "red"})
+          .setLngLat([mapLongitude, mapLatitude])
+          .addTo(map2);
+      });
 
       async function getCoordinates() {
         const address = document.getElementById("address").value;
