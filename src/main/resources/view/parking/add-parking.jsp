@@ -39,6 +39,11 @@
       border-radius: 10px;
       margin: auto auto;
     }
+
+    .area-maker{
+      width: 40px;
+      height: 40px;
+    }
   </style>
 </head>
 
@@ -160,22 +165,42 @@
         center: [mapLongitude, mapLatitude],
         zoom: 13
       });
-
       const map2 = new mapboxgl.Map({
         container: 'map2',
         style: 'mapbox://styles/yamisora/clx4wr6a5001i01pj0xm472qf',
         center: [mapLongitude, mapLatitude],
-        zoom: 13
+        zoom: 13,
       });
       var parking_coordinates = [];
       map2.on('click', function (e) {
         parking_coordinates.push(e.lngLat);
-        new mapboxgl.Marker({color: "red"})
-          .setLngLat(e.lngLat)
+        // custom marker
+        var el = document.createElement('img');
+        el.className = 'area-maker';
+        el.src = 'https://icons.veryicon.com/png/o/miscellaneous/easy-to-reconcile-icon/point-selection.png';
+        new mapboxgl.Marker(el)
+          .setLngLat([e.lngLat.lng, e.lngLat.lat])
           .addTo(map2);
-        // add to input
-        // convert array json to string
       });
+      // cho phep nguoi dung danh dau bai gui xe tren ban do
+      map.on('click', (e) => {
+        console.log(e.lngLat);
+        mapLatitude = e.lngLat.lat;
+        mapLongitude = e.lngLat.lng;
+        document.getElementById("latitude").value = mapLatitude;
+        document.getElementById("longitude").value = mapLongitude;
+        // clear all markers
+        document.querySelectorAll('.mapboxgl-marker').forEach(marker => marker.remove());
+        map2.flyTo({center: [mapLongitude, mapLatitude], zoom: 15});
+        new mapboxgl.Marker({color: "red"})
+          .setLngLat([mapLongitude, mapLatitude])
+          .addTo(map);
+        new mapboxgl.Marker({color: "red"})
+          .setLngLat([mapLongitude, mapLatitude])
+          .addTo(map2);
+      });
+
+
 
       function clearArea() {
         parking_coordinates = [];
@@ -207,59 +232,79 @@
       clearButton.style.zIndex = '10';
       clearButton.addEventListener('click', clearArea);
       map2.getCanvas().parentNode.appendChild(clearButton);
-
-
-
-
+      
       // save parking area to input
+      // set source for layer
+      var parkingArea = {
+        type: 'FeatureCollection',
+        features: [{
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: []
+          }
+        }]
+      };
+
+      map2.on('load', function () {
+        map2.addSource('parking-area', {
+          type: 'geojson',
+          data: parkingArea
+        });
+        map2.addLayer({
+          id: 'parking-area',
+          type: 'fill',
+          source: 'parking-area',
+          layout: {},
+          paint: {
+            'fill-color': '#088',
+            'fill-opacity': 0.8
+          }
+        });
+      });
+
+      map.on('load', function () {
+        map.addSource('parking-area', {
+          type: 'geojson',
+          data: parkingArea
+        });
+        map.addLayer({
+          id: 'parking-area',
+          type: 'fill',
+          source: 'parking-area',
+          layout: {},
+          paint: {
+            'fill-color': '#088',
+            'fill-opacity': 0.8
+          }
+        });
+      });
+
+
       function onSaveArea() {
         let coordinates = JSON.stringify(parking_coordinates);
         document.getElementById("coordinates").value = coordinates;
         console.log(coordinates);
         // create layer
-        map2.addLayer({
-          id: 'parking-area',
-          type: 'fill',
-          source: {
-            type: 'geojson',
-            data: {
-              type: 'Feature',
-              geometry: {
-                type: 'Polygon',
-                coordinates: [
-                  parking_coordinates.map(coordinate => [coordinate.lng, coordinate.lat])
-                ]
-              }
-            }
-          },
-          layout: {},
-          paint: {
-            'fill-color': '#088',
-            'fill-opacity': 0.8
+        // edit coordinates
+        var newcoordinates = parking_coordinates.map(function (point) {
+          return [point.lng, point.lat];
+        });
+        map.getSource('parking-area').setData({
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [newcoordinates]
           }
         });
-
-        map.addLayer({
-          id: 'parking-area',
-          type: 'fill',
-          source: {
-            type: 'geojson',
-            data: {
-              type: 'Feature',
-              geometry: {
-                type: 'Polygon',
-                coordinates: [
-                  parking_coordinates.map(coordinate => [coordinate.lng, coordinate.lat])
-                ]
-              }
-            }
-          },
-          layout: {},
-          paint: {
-            'fill-color': '#088',
-            'fill-opacity': 0.8
+        map2.getSource('parking-area').setData({
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [newcoordinates]
           }
         });
+        
         console.log("Save Area");
       }
 
@@ -323,23 +368,6 @@
       });
 
       spinGlobe();
-
-      // cho phep nguoi dung danh dau bai gui xe tren ban do
-      map.on('click', (e) => {
-        console.log(e.lngLat);
-        mapLatitude = e.lngLat.lat;
-        mapLongitude = e.lngLat.lng;
-        document.getElementById("latitude").value = mapLatitude;
-        document.getElementById("longitude").value = mapLongitude;
-        // clear all markers
-        document.querySelectorAll('.mapboxgl-marker').forEach(marker => marker.remove());
-        new mapboxgl.Marker({color: "red"})
-          .setLngLat([mapLongitude, mapLatitude])
-          .addTo(map);
-        new mapboxgl.Marker({color: "red"})
-          .setLngLat([mapLongitude, mapLatitude])
-          .addTo(map2);
-      });
 
       async function getCoordinates() {
         const address = document.getElementById("address").value;

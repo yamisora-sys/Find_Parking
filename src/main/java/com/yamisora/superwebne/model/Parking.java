@@ -19,6 +19,7 @@ import com.yamisora.superwebne.repository.ParkingOrderRepository;
 import com.yamisora.superwebne.repository.ParkingRepository;
 
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 @Entity
 @Getter
 @Setter
@@ -72,4 +73,13 @@ public class Parking {
     private Boolean verified = false;
 
     public Parking() {}
+
+    // return 
+
+    // temporary property
+    @Transient
+    private Float usedSlotRate;
+
+    @Transient
+    private Integer currentUsedSlot;
 }

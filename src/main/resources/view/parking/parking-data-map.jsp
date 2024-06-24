@@ -44,10 +44,26 @@
         .modal-body p {
             margin: 0;
         }
+        #node{
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px;
+            z-index: 100;
+        }
     </style>
 </head>
 
 <body>
+    <div id="note">
+        <h3>Note</h3>
+        <p>Green: 0-30%</p>
+        <p>Yellow: 30-70%</p>
+        <p>Red: 70-100%</p>
+    </div>
     <div id="map"></div>
     <div th:each="parking : ${parkings}">
         <div th:attr="id='parking-modal-' + ${parking.id}" class="modal fade" tabindex="-1" role="dialog"
@@ -174,6 +190,23 @@
                         `)
                         .addTo(map);
                     const area = parking.area;
+                    const usedRate = parking.usedSlotRate;
+                    var layer_color = 'green';
+                    if(usedRate <0.3){
+                        layer_color = 'green';
+                    }
+                    else if (usedRate < 0.7){
+                        layer_color = 'yellow';
+                    }
+                    else{
+                        layer_color = 'red';
+                    }
+                    // add note for color to map
+                    // green: 0-30%
+                    // yellow: 30-70%
+                    // red: 70-100%
+                    // create note box for map
+
                     if(area){
                         const area_coordinates = area.nodes.map(node => [node.longitude, node.latitude]);
                         area_coordinates.push(area_coordinates[0]);
@@ -192,7 +225,7 @@
                             },
                             'layout': {},
                             'paint': {
-                                'fill-color': '#088',
+                                'fill-color': layer_color,
                                 'fill-opacity': 0.5
                             }
                         });

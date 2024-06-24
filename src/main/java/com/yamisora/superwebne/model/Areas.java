@@ -23,6 +23,10 @@ public class Areas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private String name;
+
+    private String description;
+
     @ManyToMany(targetEntity = Node.class)
     @OrderBy("id")
     Set<Node> nodes;

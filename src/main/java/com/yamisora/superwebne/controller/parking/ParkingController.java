@@ -95,6 +95,8 @@ public class ParkingController {
         System.out.println("88" + coordinatesStr);
         JSONArray coordinates = new JSONArray(coordinatesStr);
         Areas area = new Areas();
+        area.setName(newparking.getName());
+        area.setDescription(newparking.getDescription());
         List<Node> nodes = new ArrayList<>();
         for (int i = 0; i < coordinates.length(); i++) {
             JSONObject coordinate = coordinates.getJSONObject(i);
@@ -135,6 +137,12 @@ public class ParkingController {
     @GetMapping("/get-all")
     public ResponseEntity<List<Parking>> getAll() {
         List<Parking> parkings = parkingRepository.findVerified().stream().toList();
+        for (Parking parking : parkings) {
+            Integer usedSlot = parkingRepository.usedSlot(parking.getId());
+            float usedSlotRate =  (float) usedSlot / parking.getCapacity();
+            parking.setCurrentUsedSlot(usedSlot);
+            parking.setUsedSlotRate(usedSlotRate);
+        }
         return ResponseEntity.ok(parkings);
     }
 }
